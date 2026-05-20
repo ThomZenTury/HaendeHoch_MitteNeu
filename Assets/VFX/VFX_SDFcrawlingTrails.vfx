@@ -30,7 +30,18 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614662}
       id: 0
       isStickyNote: 0
-  stickyNoteInfos: []
+  stickyNoteInfos:
+  - title: 'From here:'
+    position:
+      serializedVersion: 2
+      x: 172
+      y: -1146
+      width: 311
+      height: 160
+    contents: https://www.youtube.com/watch?v=FBP9k6W48vM&list=PLjLqixML5B8MlwxMsTRVhjlxkMIdAuYgg&index=2https://www.youtube.com/watch?v=FBP9k6W48vM&list=PLjLqixML5B8MlwxMsTRVhjlxkMIdAuYgg&index=2
+    theme: Classic
+    textSize: Small
+    colorTheme: 1
   categories: []
   uiBounds:
     serializedVersion: 2
@@ -48,7 +59,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: SDFtest
+  m_Name: VFX_SDFcrawlingTrails
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -131,7 +142,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SDFtest
+  m_Name: VFX_SDFcrawlingTrails
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -1525,7 +1536,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 0
+  m_UICollapsed: 1
   m_UISuperCollapsed: 0
   m_InputSlots: []
   m_OutputSlots:
@@ -1553,7 +1564,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661614835}
     - outputSlot: {fileID: 8926484042661614851}
       inputSlot: {fileID: 8926484042661614880}
-    position: {x: 708.4121, y: -773.11914}
+    position: {x: 592, y: -762}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -1968,7 +1979,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 483, y: -616}
+  m_UIPosition: {x: 412, y: -537}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -4392,7 +4403,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 0
+  m_UICollapsed: 1
   m_UISuperCollapsed: 0
   m_InputSlots: []
   m_OutputSlots:
