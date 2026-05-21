@@ -34,21 +34,75 @@ MonoBehaviour:
   - title: 'From here:'
     position:
       serializedVersion: 2
-      x: 172
-      y: -1146
+      x: 126
+      y: -1599
       width: 311
       height: 160
     contents: https://www.youtube.com/watch?v=FBP9k6W48vM&list=PLjLqixML5B8MlwxMsTRVhjlxkMIdAuYgg&index=2https://www.youtube.com/watch?v=FBP9k6W48vM&list=PLjLqixML5B8MlwxMsTRVhjlxkMIdAuYgg&index=2
     theme: Classic
     textSize: Small
     colorTheme: 1
+  - title: How to
+    position:
+      serializedVersion: 2
+      x: -38
+      y: -1309
+      width: 734
+      height: 237
+    contents: 'This is based on baked SDF models from your original imported FBX
+      models. To make this work with another model:
+
+      - imnport FBX model to
+      umity
+
+      - open "Windows -> Visual FX -> Utilities -> SDF Bake Tool"
+
+      -
+      make sure the box size is EXACTLY the size of your original model in Blender
+      (open Blender and check)
+
+      taking in account that there eventually was
+      a resizing of your model (if scaled to 100, you need to add 0.00...)
+
+      -
+      for z dimension choose one of the other values (e.g y-size), the model should
+      be box like, not flat
+
+      - the offsets of the box come from the midpoint
+      offset from 0,0,0 in Blender and should be matching with these
+
+      - first
+      "Bake" then "Save" your model (must be "Assets - VFX")
+
+      - leave Bake
+      Tool open
+
+      - in your scene you need  to create a parent for the SDF (create
+      an empty)
+
+      - drag and drop the SDF model from your Assets-VFX folder
+      as a child to the newly created empty
+
+      - the Parent empty should be at
+      position 0,0,0  and scaled to 1,1,1
+
+      - for the child enter the same offsets
+      in POSITION x,y,z and  the values for SCALE x,y also, as used in the Bake Tool
+
+      -
+      when animating the model use the parent to move,rotate etc.
+
+      - done '
+    theme: Classic
+    textSize: Small
+    colorTheme: 1
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: 24
-    y: -1433
-    width: 1865
-    height: 2566
+    x: -38
+    y: -1599
+    width: 1927
+    height: 2732
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1

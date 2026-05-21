@@ -7,6 +7,10 @@ using System;
 
 public class UIKeyboard : MonoBehaviour
 {
+
+    public SceneTransition transition; // assign in Inspector
+    public string targetScene = "NextScene";
+
     public GameObject menu; // Assign in inspector
 
     [SerializeField]
@@ -192,11 +196,73 @@ public class UIKeyboard : MonoBehaviour
         }
     }
 
+    void loadPlayerPrefs()
+    {
+        Vector3 leftPos = new Vector3(
+                PlayerPrefs.GetFloat("gearsLeftPositionX"),
+                PlayerPrefs.GetFloat("gearsLeftPositionY"),
+                PlayerPrefs.GetFloat("gearsLeftPositionZ")
+            );
+        Vector3 leftRot = new Vector3(
+            PlayerPrefs.GetFloat("gearsLeftRotationX"),
+            PlayerPrefs.GetFloat("gearsLeftRotationY"),
+            PlayerPrefs.GetFloat("gearsLeftRotationZ")
+        );
+        Vector3 rightPos = new Vector3(
+            PlayerPrefs.GetFloat("gearsRightPositionX"),
+            PlayerPrefs.GetFloat("gearsRightPositionY"),
+            PlayerPrefs.GetFloat("gearsRightPositionZ")
+        );
+        Vector3 rightRot = new Vector3(
+            PlayerPrefs.GetFloat("gearsRightRotationX"),
+            PlayerPrefs.GetFloat("gearsRightRotationY"),
+            PlayerPrefs.GetFloat("gearsRightRotationZ")
+        );
+        Vector3 camPos = new Vector3(
+            PlayerPrefs.GetFloat("camPositionX"),
+            PlayerPrefs.GetFloat("camPositionY"),
+            PlayerPrefs.GetFloat("camPositionZ")
+        );
+        Vector3 camRot = new Vector3(
+            PlayerPrefs.GetFloat("camRotationX"),
+            PlayerPrefs.GetFloat("camRotationY"),
+            PlayerPrefs.GetFloat("camRotationZ")
+        );
+
+        GameObject.Find("GearSetLeft").transform.position = leftPos;
+        GameObject.Find("GearSetLeft").transform.rotation = Quaternion.Euler(leftRot);
+        GameObject.Find("GearSetRight").transform.position = rightPos;
+        GameObject.Find("GearSetRight").transform.rotation = Quaternion.Euler(rightRot);
+        GameObject.Find("Main Camera").transform.position = camPos;
+        GameObject.Find("Main Camera").transform.rotation = Quaternion.Euler(camRot);
+
+        Camera cam = camera.GetComponent<Camera>();
+        cam.sensorSize = new Vector2(cam.sensorSize.x, PlayerPrefs.GetFloat("camSensorY"));
+    }
+
+
     void Update()
     {
 
-        // reset to initial state of left gear sets
-        if (Keyboard.current.rKey.wasPressedThisFrame)
+        // scene transition trigger
+        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            if (transition != null)
+            {
+                transition.onSceneLoaded = () => {
+                    // code to run after new scene is fully loaded
+                    //Debug.Log("Scene ready — now run command");
+                    loadPlayerPrefs(); // load saved values after scene transition
+                };
+                transition.FadeToScene(targetScene);
+            }
+                
+            else
+                Debug.LogWarning("SceneTransition reference not set.");
+        }
+
+            // reset to initial state of left gear sets
+            if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             GameObject obj = GameObject.Find("GearSetLeft");
             float prevMtoDeg = obj.GetComponent<GearRotations>().moveToDegree;
@@ -363,46 +429,8 @@ public class UIKeyboard : MonoBehaviour
         if (Keyboard.current.f10Key.wasPressedThisFrame)
         {
 
-            Vector3 leftPos = new Vector3(
-                PlayerPrefs.GetFloat("gearsLeftPositionX"),
-                PlayerPrefs.GetFloat("gearsLeftPositionY"),
-                PlayerPrefs.GetFloat("gearsLeftPositionZ")
-            );
-            Vector3 leftRot = new Vector3(
-                PlayerPrefs.GetFloat("gearsLeftRotationX"),
-                PlayerPrefs.GetFloat("gearsLeftRotationY"),
-                PlayerPrefs.GetFloat("gearsLeftRotationZ")
-            );
-            Vector3 rightPos = new Vector3(
-                PlayerPrefs.GetFloat("gearsRightPositionX"),
-                PlayerPrefs.GetFloat("gearsRightPositionY"),
-                PlayerPrefs.GetFloat("gearsRightPositionZ")
-            );
-            Vector3 rightRot = new Vector3(
-                PlayerPrefs.GetFloat("gearsRightRotationX"),
-                PlayerPrefs.GetFloat("gearsRightRotationY"),
-                PlayerPrefs.GetFloat("gearsRightRotationZ")
-            );
-            Vector3 camPos = new Vector3(
-                PlayerPrefs.GetFloat("camPositionX"),
-                PlayerPrefs.GetFloat("camPositionY"),
-                PlayerPrefs.GetFloat("camPositionZ")
-            );
-            Vector3 camRot = new Vector3(
-                PlayerPrefs.GetFloat("camRotationX"),
-                PlayerPrefs.GetFloat("camRotationY"),
-                PlayerPrefs.GetFloat("camRotationZ")
-            );
-
-            GameObject.Find("GearSetLeft").transform.position = leftPos;
-            GameObject.Find("GearSetLeft").transform.rotation = Quaternion.Euler(leftRot);
-            GameObject.Find("GearSetRight").transform.position = rightPos;
-            GameObject.Find("GearSetRight").transform.rotation = Quaternion.Euler(rightRot);
-            GameObject.Find("Main Camera").transform.position = camPos;
-            GameObject.Find("Main Camera").transform.rotation = Quaternion.Euler(camRot);
-
-            Camera cam = camera.GetComponent<Camera>();
-            cam.sensorSize = new Vector2(cam.sensorSize.x, PlayerPrefs.GetFloat("camSensorY"));
+            // Load values from PlayerPrefs
+            loadPlayerPrefs();
 
         }
 
@@ -521,7 +549,9 @@ public class UIKeyboard : MonoBehaviour
 
         // Videos HAVE TO BE IN THIS EXACT FOLDER IN THE RESOURCES FOLDER, otherwise it doesn't work, even if the path is correct and the file is there.
         // Assets/Resources/Videos/SmokeThickAllOver.mp4 for example, but you have to write "SmokeThickAllOver" in the fileName0 variable, without extension and folder path. No idea why, but it works that way.
-        if (Keyboard.current.numpad0Key.wasPressedThisFrame)
+
+
+            if (Keyboard.current.numpad0Key.wasPressedThisFrame)
         {
             BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
 
@@ -579,6 +609,6 @@ public class UIKeyboard : MonoBehaviour
             else Debug.LogError("Failed to load or player is null: " + fileName3);
         }
 
-    }
+        }
 
 }
