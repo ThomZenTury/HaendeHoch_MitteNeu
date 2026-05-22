@@ -7,6 +7,8 @@ namespace extOSC
     public class OSC_receive_main : MonoBehaviour
     {
 
+
+
         #region Public Vars
 
         [Header("OSC Settings")]
@@ -74,6 +76,7 @@ namespace extOSC
             {
                 // ATTENTION! The shader's variables have to be addressed with a leading underscore "_" even if they are not named like that in ShaderGraph
                 videoMaterial.SetFloat("_AlphaRemapMax", value);
+                SceneTransition.bgVideoAlpha = value; // the static float to pas to other scenes, load it from there in SceneTransition.cs and set it to the shader's variable there as well
                 // videoMaterial.SetFloat("_AlphaRemapMin", value);
                 Debug.LogFormat("Received: set video alpha to {0}", value);
             }
@@ -112,6 +115,7 @@ namespace extOSC
                         BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
                         BGvideoPlayer.clip = clip;
                         BGvideoPlayer.Play();
+                        SceneTransition.bgVideoTitle = fileName0; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
                     }
                     // LogError holds up the whole program and prevents it from running, so I changed it to Debug.Log.
                     // else Debug.LogError("Failed to load or player is null: " + fileName0);
@@ -127,6 +131,7 @@ namespace extOSC
                         BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
                         BGvideoPlayer.clip = clip;
                         BGvideoPlayer.Play();
+                        SceneTransition.bgVideoTitle = fileName1; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
                     }
                     else Debug.Log("Failed to load or player is null: " + fileName1);
 
@@ -141,6 +146,7 @@ namespace extOSC
                         BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
                         BGvideoPlayer.clip = clip;
                         BGvideoPlayer.Play();
+                        SceneTransition.bgVideoTitle = fileName2; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
                     }
                     else Debug.Log("Failed to load or player is null: " + fileName2);
                 }
@@ -155,6 +161,7 @@ namespace extOSC
                         BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
                         BGvideoPlayer.clip = clip;
                         BGvideoPlayer.Play();
+                        SceneTransition.bgVideoTitle = fileName3; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
                     }
                     else Debug.Log("Failed to load or player is null: " + fileName3);
                 }
@@ -168,6 +175,7 @@ namespace extOSC
                         BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
                         BGvideoPlayer.clip = clip;
                         BGvideoPlayer.Play();
+                        SceneTransition.bgVideoTitle = fileName4; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
                     }
                     else Debug.Log("Failed to load or player is null: " + fileName4);
                 }

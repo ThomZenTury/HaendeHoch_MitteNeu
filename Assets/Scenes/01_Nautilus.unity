@@ -2760,11 +2760,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2880,6 +2880,9 @@ MonoBehaviour:
   blocker: {fileID: 1028120679}
   fadeDuration: 0.75
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  self: {fileID: 437827413}
+  videoMaterial: {fileID: 2100000, guid: 2648342e4ebae8ee48614b580e18059b, type: 2}
+  BGVideoPanel: {fileID: 599813642}
 --- !u!4 &437827415
 Transform:
   m_ObjectHideFlags: 0
@@ -4840,7 +4843,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1, z: -0.8}
-  m_LocalScale: {x: 1.1, y: 0.6875, z: 0.61875}
+  m_LocalScale: {x: 1.18, y: 0.73749995, z: 0.66374993}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -5892,8 +5895,12 @@ PrefabInstance:
       value: stageEquipment
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 72c74de8b8a3481c8af93a48927e3cf3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 72c74de8b8a3481c8af93a48927e3cf3, type: 3}
       propertyPath: m_TagString
-      value: Respawn
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6822,7 +6829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ccbb75b49cc728606987dc4142a3a579, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ccbb75b49cc728606987dc4142a3a579, type: 3}
       propertyPath: m_TagString
@@ -7911,7 +7918,7 @@ RectTransform:
   m_GameObject: {fileID: 1035399905}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.36145833, y: 0.36145833, z: 0.36145833}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 381012489}
@@ -7919,7 +7926,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1226, y: 976.9136}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1035399907
 MonoBehaviour:
@@ -8622,7 +8629,7 @@ GameObject:
   - component: {fileID: 1191974067}
   m_Layer: 0
   m_Name: StageSetup
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9649,6 +9656,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1282258304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
+  m_PrefabInstance: {fileID: 435161531}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1288108318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12532,6 +12544,7 @@ MonoBehaviour:
   text: {fileID: 2035974025}
   yIn: {fileID: 2126269514}
   target: {fileID: 1861180454}
+  planetary: {fileID: 1282258304}
   fine: {fileID: 2098020266}
   isLocked: {fileID: 693481965}
   minY: 0.5
@@ -12555,6 +12568,7 @@ MonoBehaviour:
   text: {fileID: 841419144}
   xIn: {fileID: 1262591746}
   target: {fileID: 1861180454}
+  planetary: {fileID: 1282258304}
   fine: {fileID: 2098020266}
   isLocked: {fileID: 693481965}
   minX: -2
@@ -12579,6 +12593,7 @@ MonoBehaviour:
   text: {fileID: 801090871}
   yIn: {fileID: 469204403}
   target: {fileID: 434197536}
+  planetary: {fileID: 0}
   fine: {fileID: 2098020266}
   isLocked: {fileID: 2066743460}
   minY: 0.5
@@ -12602,6 +12617,7 @@ MonoBehaviour:
   text: {fileID: 2092812204}
   xIn: {fileID: 666734740}
   target: {fileID: 434197536}
+  planetary: {fileID: 0}
   fine: {fileID: 2098020266}
   isLocked: {fileID: 2066743460}
   minX: -2
@@ -14537,7 +14553,7 @@ GameObject:
   - component: {fileID: 7146460870925195152}
   m_Layer: 0
   m_Name: BackgroundMesh
-  m_TagString: Respawn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -15033,7 +15049,7 @@ GameObject:
   - component: {fileID: 5886844021290701701}
   m_Layer: 0
   m_Name: Platform
-  m_TagString: Respawn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

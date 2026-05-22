@@ -9,6 +9,7 @@ public class SliderToY : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;        // assign in Inspector
     [SerializeField] private TMP_InputField yIn;        // assign in Inspector
     [SerializeField] private Transform target;     // assign target transform
+    [SerializeField] private Transform planetary;     // assign planetary for left set
     [SerializeField] private Toggle fine;
     [SerializeField] private Toggle isLocked;
     [SerializeField] private float minY = 1.0f;      // slider min mapped Y
@@ -79,6 +80,13 @@ public class SliderToY : MonoBehaviour
             Vector3 pos = target.position;
             pos.y = y;
             target.position = pos;
+
+            if (planetary != null)
+            {
+                Vector3 planetaryPos = planetary.position;
+                planetaryPos.y = y;
+                planetary.position = planetaryPos;
+            }
 
             text.text = $"Y: {y:F4}"; // Update text with current Y value, formatted to 2 decimal places
             yIn.text = $"{y:F4}"; // Update text with current Y value, formatted to 2 decimal places

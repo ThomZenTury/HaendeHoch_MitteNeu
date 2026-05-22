@@ -9,6 +9,7 @@ public class SliderToX : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;        // assign in Inspector
     [SerializeField] private TMP_InputField xIn;        // assign in Inspector
     [SerializeField] private Transform target;     // assign target transform
+    [SerializeField] private Transform planetary;     // assign planetary for left set
     [SerializeField] private Toggle fine;     // assign target transform
     [SerializeField] private Toggle isLocked;
     [SerializeField] private float minX = -2.0f;      // slider min mapped X
@@ -104,6 +105,15 @@ public class SliderToX : MonoBehaviour
             Vector3 pos = target.position;
             pos.x = x;
             target.position = pos;
+
+            if (planetary != null)
+            {
+                Vector3 planetaryPos = planetary.position;
+                planetaryPos.x = x;
+                planetary.position = planetaryPos;
+            }
+
+
 
             text.text = $"X: {x:F4}"; // Update text with current X value, formatted to 2 decimal places
             xIn.text = $"{x:F4}"; // Update text with current X value, formatted to 2 decimal places

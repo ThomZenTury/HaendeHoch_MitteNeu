@@ -59,7 +59,7 @@ Material:
     - _AlphaSrcBlend: 1
     - _BlendMode: 0
     - _Brightness: 1
-    - _BrightnessAmount: 14.049323
+    - _BrightnessAmount: 3.6575706
     - _ConservativeDepthOffsetEnable: 0
     - _Contrast: 0
     - _ContrastAmount: 1
@@ -68,7 +68,7 @@ Material:
     - _DepthOffsetEnable: 0
     - _Distortion: 1
     - _DistortionScale: 4.98
-    - _DistortionStrength: 0.65182185
+    - _DistortionStrength: 1.1095891
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
