@@ -132,20 +132,26 @@ public class GearRotations : MonoBehaviour
     {
         // initialAngle = drivingGear.rotation.eulerAngles; // get the initial rotation of the driving gear
 
-        masterRotation = -transform.rotation.eulerAngles.y;
-        //transform.Rotate(0, -masterRotation, 0, Space.World);
+        // masterRotation = -transform.rotation.eulerAngles.y;
+        if (gearSet.name == "GearSetLeft") masterRotation = -SceneTransition.crossMasterRotationLeft; // set the initial master rotation for the left gear set based on the value from SceneTransition,
+        if (gearSet.name == "GearSetRight") masterRotation = -SceneTransition.crossMasterRotationRight; // set the initial master rotation for the right gear set based on the value from SceneTransition,
 
         // for positioning the gears
         radians = 2 * Math.PI / num; // angle between each gear in radians 
         midPoint = drivingGear.position; // get the position of the driving gear, which is the center point for placing the target gears
 
-        rotateLeftGearSet(masterRotation, radians, midPoint, new Quaternion(0, 0, 0, 0)); // initialize the position and rotation of the target gears based on the initial rotation of the main gear, can be adjusted in the Inspector for testing and debugging purposes, can be removed later
-        // rotateRightGearSet(masterRotation, radians, midPoint, 0.0f); // initialize the position and rotation of the target gears based on the initial rotation of the main gear, can be adjusted in the Inspector for testing and debugging purposes, can be removed later
-        rotateRightGearSet(masterRotation, radians, midPoint, Quaternion.Euler(0, 180, 0)); // initialize the position and rotation of the target gears based on the initial rotation of the main gear, can be adjusted in the Inspector for testing and debugging purposes, can be removed later
+        if (gearSet.name == "GearSetLeft") gearSet.rotation = Quaternion.Euler(0, -masterRotation, 0); // set the initial rotation of the whole gear set to 0, can be adjusted in the Inspector for testing and debugging purposes,
+        // rotateLeftGearSet(masterRotation, radians, midPoint, new Quaternion(0, 0, 0, 0)); // initialize the position and rotation of the target gears based on the initial rotation of the main gear, can be adjusted in the Inspector for testing and debugging purposes
+        rotateLeftGearSet(masterRotation, radians, midPoint, Quaternion.Euler(0, -masterRotation, 0)); // initialize the position and rotation of the target gears based on the initial rotation of the main gear, can be adjusted in the Inspector for testing and debugging purposes
+
+        // flip the right gear to make it look inwards
+        if (gearSet.name == "GearSetRight") gearSet.rotation = Quaternion.Euler(0, -masterRotation, 0); // set the initial rotation of the whole gear set to 0, can be adjusted in the Inspector for testing and debugging purposes,
+        rotateRightGearSet(masterRotation, radians, midPoint, Quaternion.Euler(0, -masterRotation, 0)); // initialize the position and rotation of the target gears based on the initial rotation of the main gear, can be adjusted in the Inspector for testing and debugging purposes
 
         // Debug.Log("masterRot= " + masterRotation);
         // Debug.Log("radians= " + Mathf.Rad2Deg * radians);
         // Debug.Log("midPoint= " + midPoint);
+
 
 
     }
@@ -153,7 +159,10 @@ public class GearRotations : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        masterRotation = -transform.rotation.eulerAngles.y;
+        // masterRotation = -transform.rotation.eulerAngles.y;
+        if (gearSet.name == "GearSetLeft") masterRotation = -SceneTransition.crossMasterRotationLeft; // set the initial master rotation for the left gear set based on the value from SceneTransition,
+        if (gearSet.name == "GearSetRight") masterRotation = -SceneTransition.crossMasterRotationRight; // set the initial master rotation for the right gear set based on the value from SceneTransition,
+
         //transform.Rotate(0, -masterRotation, 0, Space.World);
 
         // for positioning the gears

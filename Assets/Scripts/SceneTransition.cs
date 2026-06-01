@@ -20,6 +20,14 @@ public class SceneTransition : MonoBehaviour
 
     [SerializeField] public Material videoMaterial;       // assign BG video material in Inspector
                                                           // declare a static alpha value for BG video that can be accessed by other SCENES
+
+    [SerializeField] private Transform planetary;     // assign planetary for left set
+    // to get a static master Rotation for the gear  sets across scenes
+    public static float crossMasterRotationLeft = 0f; // declare a static master rotation value for the gear sets that can be accessed by other SCENES
+    public static float crossMasterRotationRight = 180f; // declare a static master rotation value for the gear sets that can be accessed by other SCENES
+
+
+    // to get static video title and alpha across scenes
     public GameObject BGVideoPanel;
     public static float bgVideoAlpha = 0f; // declare a static alpha value for BG video that can be accessed by other SCENES
     public static String bgVideoTitle = ""; // declare a static alpha value for BG video that can be accessed by other SCENES
@@ -55,6 +63,14 @@ public class SceneTransition : MonoBehaviour
             blocker.alpha = 0f;
             blocker.blocksRaycasts = false;
             blocker.interactable = false;
+        }
+
+        // rotate planetary gear left into right angle
+        if (planetary != null)
+        {
+            Vector3 planetaryRot = planetary.rotation.eulerAngles;
+            planetaryRot.y = crossMasterRotationLeft;
+            planetary.rotation = Quaternion.Euler(planetaryRot);
         }
     }
 

@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEngine.Video;
+using System;
 
 
 namespace extOSC
 {
     public class OSC_receive_main : MonoBehaviour
     {
-
-
-
         #region Public Vars
 
         [Header("OSC Settings")]
@@ -31,6 +29,11 @@ namespace extOSC
         [SerializeField] private string fileName2;
         [SerializeField] private string fileName3;
         [SerializeField] private string fileName4;
+        [SerializeField] private string fileName5;
+        [SerializeField] private string fileName6;
+        [SerializeField] private string fileName7;
+        [SerializeField] private string fileName8;
+        [SerializeField] private string fileName9;
         private VideoPlayer BGvideoPlayer;
 
         #endregion
@@ -99,6 +102,21 @@ namespace extOSC
 
         }
 
+        private void loadNewVideoClip(String fileName)
+        {
+            BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
+            VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName); // no extension 
+
+            if (clip != null && BGvideoPlayer != null)
+            {
+                BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
+                BGvideoPlayer.clip = clip;
+                BGvideoPlayer.Play();
+                SceneTransition.bgVideoTitle = fileName; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
+            }
+            else Debug.LogError("Failed to load or player is null: " + fileName);
+        }
+
         private void ReceivedVideoClip(OSCMessage message)
         {
             BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
@@ -107,77 +125,45 @@ namespace extOSC
             {
                 if (value == 0)
                 {
-                    Debug.Log("Trying to load clip: " + fileName0);
-                    VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName0); // no extension 
-
-                    if (clip != null && BGvideoPlayer != null)
-                    {
-                        BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                        BGvideoPlayer.clip = clip;
-                        BGvideoPlayer.Play();
-                        SceneTransition.bgVideoTitle = fileName0; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                    }
-                    // LogError holds up the whole program and prevents it from running, so I changed it to Debug.Log.
-                    // else Debug.LogError("Failed to load or player is null: " + fileName0);
-                    else Debug.Log("Failed to load or player is null: " + fileName0);
+                    loadNewVideoClip(fileName0);
                 }
                 else if (value == 1)
                 {
-                    Debug.Log("Trying to load clip: " + fileName1);
-                    VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName1); // no extension 
-
-                    if (clip != null && BGvideoPlayer != null)
-                    {
-                        BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                        BGvideoPlayer.clip = clip;
-                        BGvideoPlayer.Play();
-                        SceneTransition.bgVideoTitle = fileName1; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                    }
-                    else Debug.Log("Failed to load or player is null: " + fileName1);
+                    loadNewVideoClip(fileName1);
 
                 }
                 else if (value == 2)
                 {
-                    Debug.Log("Trying to load clip: " + fileName2);
-                    VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName2); // no extension 
-
-                    if (clip != null && BGvideoPlayer != null)
-                    {
-                        BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                        BGvideoPlayer.clip = clip;
-                        BGvideoPlayer.Play();
-                        SceneTransition.bgVideoTitle = fileName2; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                    }
-                    else Debug.Log("Failed to load or player is null: " + fileName2);
+                    loadNewVideoClip(fileName2);
                 }
 
                 else if (value == 3)
                 {
-                    Debug.Log("Trying to load clip: " + fileName3);
-                    VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName3); // no extension 
-
-                    if (clip != null && BGvideoPlayer != null)
-                    {
-                        BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                        BGvideoPlayer.clip = clip;
-                        BGvideoPlayer.Play();
-                        SceneTransition.bgVideoTitle = fileName3; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                    }
-                    else Debug.Log("Failed to load or player is null: " + fileName3);
+                    loadNewVideoClip(fileName3);
                 }
                 else if (value == 4)
                 {
-                    Debug.Log("Trying to load clip: " + fileName4);
-                    VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName4); // no extension 
-
-                    if (clip != null && BGvideoPlayer != null)
-                    {
-                        BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                        BGvideoPlayer.clip = clip;
-                        BGvideoPlayer.Play();
-                        SceneTransition.bgVideoTitle = fileName4; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                    }
-                    else Debug.Log("Failed to load or player is null: " + fileName4);
+                    loadNewVideoClip(fileName4);
+                }
+                else if (value == 5)
+                {
+                    loadNewVideoClip(fileName5);
+                }
+                else if (value == 6)
+                {
+                    loadNewVideoClip(fileName6);
+                }
+                else if (value == 7)
+                {
+                    loadNewVideoClip(fileName7);
+                }
+                else if (value == 8)
+                {
+                    loadNewVideoClip(fileName8);
+                }
+                else if (value == 9)
+                {
+                    loadNewVideoClip(fileName9);
                 }
             }
         }

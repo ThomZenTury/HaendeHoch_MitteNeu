@@ -3469,8 +3469,8 @@ MonoBehaviour:
   blocker: {fileID: 2115308699}
   fadeDuration: 0.75
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  self: {fileID: 449333889}
   videoMaterial: {fileID: 2100000, guid: 2648342e4ebae8ee48614b580e18059b, type: 2}
+  planetary: {fileID: 435161532}
   BGVideoPanel: {fileID: 599813642}
 --- !u!4 &449333891
 Transform:
@@ -5467,7 +5467,7 @@ Transform:
   m_GameObject: {fileID: 599813642}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: -0.08}
+  m_LocalPosition: {x: 0, y: 0.9, z: -0.08}
   m_LocalScale: {x: 1.1, y: 0.6875, z: 0.61875}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5495,14 +5495,12 @@ VideoPlayer:
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 0.5
   m_AudioOutputMode: 2
-  m_TargetAudioSources:
-  - {fileID: 0}
-  m_DirectAudioVolumes:
-  - 1
+  m_TargetAudioSources: []
+  m_DirectAudioVolumes: []
   m_Url: 
-  m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
-  m_ControlledAudioTrackCount: 1
+  m_EnabledAudioTracks: 
+  m_DirectAudioMutes: 
+  m_ControlledAudioTrackCount: 0
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
@@ -13095,13 +13093,19 @@ MonoBehaviour:
   RightSpeedIn: {fileID: 1543450096}
   LeftRotYIn: {fileID: 570722822}
   RightRotYIn: {fileID: 14425738}
+  planetary: {fileID: 435161532}
   toggleLeftGears: 0
   toggleRightGears: 0
   fileName0: SmokeSingleTrail
   fileName1: SmokeThickAllOver
   fileName2: SmokeThickPinkFromAbove
   fileName3: TKMAGenniesTest
-  fileName4: 
+  fileName4: EyeGalaxy
+  fileName5: 
+  fileName6: 
+  fileName7: 
+  fileName8: 
+  fileName9: 
 --- !u!114 &1805480887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13128,7 +13132,12 @@ MonoBehaviour:
   fileName1: SmokeThickAllOver
   fileName2: SmokeThickPinkFromAbove
   fileName3: TKMAGenniesTest
-  fileName4: 
+  fileName4: EyeGalaxy
+  fileName5: 
+  fileName6: 
+  fileName7: 
+  fileName8: 
+  fileName9: 
 --- !u!1 &1860355650
 GameObject:
   m_ObjectHideFlags: 0

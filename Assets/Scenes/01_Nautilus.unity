@@ -2212,7 +2212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.098
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2880,8 +2880,8 @@ MonoBehaviour:
   blocker: {fileID: 1028120679}
   fadeDuration: 0.75
   fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  self: {fileID: 437827413}
   videoMaterial: {fileID: 2100000, guid: 2648342e4ebae8ee48614b580e18059b, type: 2}
+  planetary: {fileID: 1282258304}
   BGVideoPanel: {fileID: 599813642}
 --- !u!4 &437827415
 Transform:
@@ -3697,7 +3697,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u200B"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4747,6 +4747,7 @@ GameObject:
   - component: {fileID: 599813644}
   - component: {fileID: 599813643}
   - component: {fileID: 599813647}
+  - component: {fileID: 599813648}
   m_Layer: 0
   m_Name: BackGroundPlane
   m_TagString: Untagged
@@ -4869,21 +4870,36 @@ VideoPlayer:
   m_DataSource: 0
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 0.5
-  m_AudioOutputMode: 2
-  m_TargetAudioSources:
-  - {fileID: 0}
-  m_DirectAudioVolumes:
-  - 1
+  m_AudioOutputMode: 0
+  m_TargetAudioSources: []
+  m_DirectAudioVolumes: []
   m_Url: 
-  m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
-  m_ControlledAudioTrackCount: 1
+  m_EnabledAudioTracks: 
+  m_DirectAudioMutes: 
+  m_ControlledAudioTrackCount: 0
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
+--- !u!111 &599813648
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599813642}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: c7ebbdcede6e02e8ea4e8b6f7a3547fa, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &617642908
 GameObject:
   m_ObjectHideFlags: 0
@@ -11335,7 +11351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.04
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11978,6 +11994,7 @@ MonoBehaviour:
   RightSpeedIn: {fileID: 1543450096}
   LeftRotYIn: {fileID: 570722822}
   RightRotYIn: {fileID: 14425738}
+  planetary: {fileID: 1282258304}
   toggleLeftGears: 0
   toggleRightGears: 0
   fileName0: SmokeSingleTrail

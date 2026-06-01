@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Video;
 using TMPro;
 using System;
+using Unity.VectorGraphics;
 
 public class UIKeyboard : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class UIKeyboard : MonoBehaviour
     [SerializeField] private TMP_InputField LeftRotYIn;        // assign in Inspector
     [SerializeField] private TMP_InputField RightRotYIn;        // assign in Inspector
 
+    [SerializeField] private Transform planetary;     // assign planetary for left set
+
 
 
     private bool maintenanceMode;
@@ -59,6 +62,11 @@ public class UIKeyboard : MonoBehaviour
     public string fileName2;
     public string fileName3;
     public string fileName4;
+    public string fileName5;
+    public string fileName6;
+    public string fileName7;
+    public string fileName8;
+    public string fileName9;
     private VideoPlayer BGvideoPlayer;
 
     void Start()
@@ -193,6 +201,14 @@ public class UIKeyboard : MonoBehaviour
             Vector3 rot = GameObject.Find("GearSetLeft").transform.rotation.eulerAngles;
             rot.y = rotY;
             GameObject.Find("GearSetLeft").transform.rotation = Quaternion.Euler(rot);
+            SceneTransition.crossMasterRotationLeft = rotY; // update the static master rotation value in SceneTransition for the left gear set, so it can be accessed by other SCENES
+
+            if (planetary != null)
+            {
+                Vector3 planetaryRot = planetary.rotation.eulerAngles;
+                planetaryRot.y = rotY;
+                planetary.rotation = Quaternion.Euler(planetaryRot);
+            }
         }
     }
 
@@ -203,11 +219,15 @@ public class UIKeyboard : MonoBehaviour
             Vector3 rot = GameObject.Find("GearSetRight").transform.rotation.eulerAngles;
             rot.y = rotY;
             GameObject.Find("GearSetRight").transform.rotation = Quaternion.Euler(rot);
+            SceneTransition.crossMasterRotationRight = rotY; // update the static master rotation value in SceneTransition for the right gear set, so it can be accessed by other SCENES
         }
     }
 
     void savePlayerPrefs()
     {
+        float mastRotLeft = SceneTransition.crossMasterRotationLeft;
+        float mastRotRight = SceneTransition.crossMasterRotationRight;
+
         float gearsLeftPositionX = GameObject.Find("GearSetLeft").transform.position.x;
         float gearsLeftPositionY = GameObject.Find("GearSetLeft").transform.position.y;
         float gearsLeftPositionZ = GameObject.Find("GearSetLeft").transform.position.z;
@@ -237,6 +257,9 @@ public class UIKeyboard : MonoBehaviour
         Camera cam = camera.GetComponent<Camera>();
         float camSensorY = cam.sensorSize.y;
         // camRotation = GameObject.Find("Main Camera").transform.rotation.ToString();
+
+        PlayerPrefs.SetFloat("mastRotLeft", mastRotLeft);
+        PlayerPrefs.SetFloat("mastRotRight", mastRotRight);
 
         PlayerPrefs.SetFloat("gearsLeftPositionX", gearsLeftPositionX);
         PlayerPrefs.SetFloat("gearsLeftPositionY", gearsLeftPositionY);
@@ -275,6 +298,9 @@ public class UIKeyboard : MonoBehaviour
 
     void loadPlayerPrefs()
     {
+        float mastRotLeft = PlayerPrefs.GetFloat("mastRotLeft");
+        float mastRotRight = PlayerPrefs.GetFloat("mastRotRight");
+
         Vector3 leftPos = new Vector3(
                 PlayerPrefs.GetFloat("gearsLeftPositionX"),
                 PlayerPrefs.GetFloat("gearsLeftPositionY"),
@@ -306,15 +332,38 @@ public class UIKeyboard : MonoBehaviour
             PlayerPrefs.GetFloat("camRotationZ")
         );
 
+        SceneTransition.crossMasterRotationLeft = mastRotLeft; // update the static master rotation value in SceneTransition for the left gear set, so it can be accessed by other SCENES
+        SceneTransition.crossMasterRotationRight = mastRotRight; // update the static master rotation value in SceneTransition for the right gear set, so it can be accessed by other SCENES
+
         GameObject.Find("GearSetLeft").transform.position = leftPos;
         GameObject.Find("GearSetLeft").transform.rotation = Quaternion.Euler(leftRot);
         GameObject.Find("GearSetRight").transform.position = rightPos;
         GameObject.Find("GearSetRight").transform.rotation = Quaternion.Euler(rightRot);
         GameObject.Find("Main Camera").transform.position = camPos;
+        camXIn.text = camPos.x.ToString("F4");
+        camYIn.text = camPos.y.ToString("F4");
+        camZIn.text = camPos.z.ToString("F4");
         GameObject.Find("Main Camera").transform.rotation = Quaternion.Euler(camRot);
+        camRotXIn.text = Quaternion.Euler(camRot).x.ToString("F4");
+        camRotYIn.text = Quaternion.Euler(camRot).y.ToString("F4");
 
         Camera cam = camera.GetComponent<Camera>();
         cam.sensorSize = new Vector2(cam.sensorSize.x, PlayerPrefs.GetFloat("camSensorY"));
+    }
+
+    private void loadNewVideoClip(String fileName)
+    {
+        BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
+        VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName); // no extension 
+
+        if (clip != null && BGvideoPlayer != null)
+        {
+            BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
+            BGvideoPlayer.clip = clip;
+            BGvideoPlayer.Play();
+            SceneTransition.bgVideoTitle = fileName; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
+        }
+        else Debug.LogError("Failed to load or player is null: " + fileName);
     }
 
 
@@ -375,13 +424,29 @@ public class UIKeyboard : MonoBehaviour
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             GameObject obj = GameObject.Find("GearSetLeft");
+            //  calc the reset rotations etc.
             float prevMtoDeg = obj.GetComponent<GearRotations>().moveToDegree;
             float prevDur = obj.GetComponent<GearRotations>().duration;
             obj.GetComponent<GearRotations>().moveToDegree = 0f;
             obj.GetComponent<GearRotations>().duration = 0.1f;
-            obj.GetComponent<GearRotations>().rotateLeftGearSet(obj.GetComponent<GearRotations>().masterRotation, obj.GetComponent<GearRotations>().radians, obj.GetComponent<GearRotations>().midPoint, new Quaternion(0, 0, 0, 0)); ;
+            obj.GetComponent<GearRotations>().rotateLeftGearSet(-SceneTransition.crossMasterRotationLeft, obj.GetComponent<GearRotations>().radians, obj.GetComponent<GearRotations>().midPoint, Quaternion.Euler(0, SceneTransition.crossMasterRotationLeft, 0)); ;
             obj.GetComponent<GearRotations>().moveToDegree = prevMtoDeg;
             obj.GetComponent<GearRotations>().duration = prevDur;
+            // then rotate the right gearset to the masterRotation stored in crossmasterRotationLeft
+            // Vector3 drivingGearRot = obj.GetComponent<GearRotations>().drivingGear.rotation.eulerAngles;
+            // // drivingGearRot.y = SceneTransition.crossMasterRotationLeft;
+            // obj.GetComponent<GearRotations>().drivingGear.rotation = Quaternion.Euler(drivingGearRot);
+
+            // obj.GetComponent<GearRotations>().drivingGear.rotation = Quaternion.Euler(0, SceneTransition.crossMasterRotationLeft, 0);
+
+            if (planetary != null)
+            {
+                Vector3 planetaryRot = planetary.rotation.eulerAngles;
+                planetaryRot.y = SceneTransition.crossMasterRotationLeft;
+                planetary.rotation = Quaternion.Euler(planetaryRot);
+            }
+
+
         }
         // reset to initial state of right gear sets
         if (Keyboard.current.tKey.wasPressedThisFrame)
@@ -392,7 +457,7 @@ public class UIKeyboard : MonoBehaviour
             float prevDur = obj.GetComponent<GearRotations>().duration;
             obj.GetComponent<GearRotations>().moveToDegree = 0f;
             obj.GetComponent<GearRotations>().duration = 0.1f;
-            obj.GetComponent<GearRotations>().rotateRightGearSet(obj.GetComponent<GearRotations>().masterRotation, obj.GetComponent<GearRotations>().radians, obj.GetComponent<GearRotations>().midPoint, Quaternion.Euler(0, 180, 0)); ;
+            obj.GetComponent<GearRotations>().rotateRightGearSet(-SceneTransition.crossMasterRotationRight, obj.GetComponent<GearRotations>().radians, obj.GetComponent<GearRotations>().midPoint, Quaternion.Euler(0, 180, 0)); ;
             obj.GetComponent<GearRotations>().moveToDegree = prevMtoDeg;
             obj.GetComponent<GearRotations>().duration = prevDur;
         }
@@ -577,66 +642,43 @@ public class UIKeyboard : MonoBehaviour
 
             if (Keyboard.current.numpad0Key.wasPressedThisFrame)
             {
-                BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
-
-                VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName0); // no extension 
-                Debug.Log("Loaded clip: " + clip);
-                Debug.Log("Player: " + BGvideoPlayer);
-
-                if (clip != null && BGvideoPlayer != null)
-                {
-                    BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                    BGvideoPlayer.clip = clip;
-                    BGvideoPlayer.Play();
-                    SceneTransition.bgVideoTitle = fileName0; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-
-                }
-                else Debug.LogError("Failed to load or player is null: " + fileName0);
+                loadNewVideoClip(fileName0);
             }
             if (Keyboard.current.numpad1Key.wasPressedThisFrame)
             {
-                BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
-                VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName1); // no extension 
-
-                if (clip != null && BGvideoPlayer != null)
-                {
-                    BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                    BGvideoPlayer.clip = clip;
-                    BGvideoPlayer.Play();
-                    SceneTransition.bgVideoTitle = fileName1; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-
-                }
-                else Debug.LogError("Failed to load or player is null: " + fileName1);
+                loadNewVideoClip(fileName1);
             }
-
             if (Keyboard.current.numpad2Key.wasPressedThisFrame)
             {
-                BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
-                VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName2); // no extension 
-
-                if (clip != null && BGvideoPlayer != null)
-                {
-                    BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                    BGvideoPlayer.clip = clip;
-                    BGvideoPlayer.Play();
-                    SceneTransition.bgVideoTitle = fileName2; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                }
-                else Debug.LogError("Failed to load or player is null: " + fileName2);
+                loadNewVideoClip(fileName2);
             }
-
             if (Keyboard.current.numpad3Key.wasPressedThisFrame)
             {
-                BGvideoPlayer = BGVideoPanel.GetComponentInChildren<VideoPlayer>();
-                VideoClip clip = Resources.Load<VideoClip>("Videos/" + fileName3); // no extension 
-
-                if (clip != null && BGvideoPlayer != null)
-                {
-                    BGvideoPlayer.source = UnityEngine.Video.VideoSource.VideoClip;
-                    BGvideoPlayer.clip = clip;
-                    BGvideoPlayer.Play();
-                    SceneTransition.bgVideoTitle = fileName3; // set the static string to the name of the currently playing video clip, so it can be accessed by other SCENES   
-                }
-                else Debug.LogError("Failed to load or player is null: " + fileName3);
+                loadNewVideoClip(fileName3);
+            }
+            if (Keyboard.current.numpad4Key.wasPressedThisFrame)
+            {
+                loadNewVideoClip(fileName4);
+            }
+            if (Keyboard.current.numpad5Key.wasPressedThisFrame)
+            {
+                loadNewVideoClip(fileName5);
+            }
+            if (Keyboard.current.numpad6Key.wasPressedThisFrame)
+            {
+                loadNewVideoClip(fileName6);
+            }
+            if (Keyboard.current.numpad7Key.wasPressedThisFrame)
+            {
+                loadNewVideoClip(fileName7);
+            }
+            if (Keyboard.current.numpad8Key.wasPressedThisFrame)
+            {
+                loadNewVideoClip(fileName8);
+            }
+            if (Keyboard.current.numpad9Key.wasPressedThisFrame)
+            {
+                loadNewVideoClip(fileName9);
             }
         }
     }
