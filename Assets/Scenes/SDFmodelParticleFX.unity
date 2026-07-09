@@ -642,6 +642,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NautilusGear
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -779,7 +783,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 446
+      - m_Value: 82
         m_Name: SpawnRate
         m_Overridden: 1
       - m_Value: 0.01

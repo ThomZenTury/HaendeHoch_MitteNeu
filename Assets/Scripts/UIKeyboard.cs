@@ -8,10 +8,12 @@ using Unity.VectorGraphics;
 
 public class UIKeyboard : MonoBehaviour
 {
-
+    [Header("Scene Transition")]
     public SceneTransition transition; // assign in Inspector
-    public string targetScene = "NextScene";
+    public string prevScene = "prevScene";
+    public string nextScene = "nextScene";
 
+    [Header("OBJs + Materials")]
     public GameObject menu; // Assign in inspector
 
     [SerializeField]
@@ -19,6 +21,16 @@ public class UIKeyboard : MonoBehaviour
 
     [SerializeField]
     private Camera camera; // Assign in inspector
+
+    [SerializeField] private Transform planetary;     // assign planetary for left set
+
+    private GameObject[] stageItems;
+    private GameObject twistedPlane;
+
+    private VideoPlayer BGvideoPlayer;
+
+
+    [Header("Calibration Menu")]
     [SerializeField] private Toggle fine;
     [SerializeField] private Toggle camLock;
 
@@ -33,10 +45,6 @@ public class UIKeyboard : MonoBehaviour
     [SerializeField] private TMP_InputField LeftRotYIn;        // assign in Inspector
     [SerializeField] private TMP_InputField RightRotYIn;        // assign in Inspector
 
-    [SerializeField] private Transform planetary;     // assign planetary for left set
-
-
-
     private bool maintenanceMode;
 
     private float step = 0.001f;
@@ -47,9 +55,6 @@ public class UIKeyboard : MonoBehaviour
     private float leftSpeed;
     private float rightSpeed;
 
-    private GameObject[] stageItems;
-    private GameObject twistedPlane;
-
     private String gearsLeftPosition;
     private String gearsRightPosition;
     private String gearsLeftRotation;
@@ -57,6 +62,7 @@ public class UIKeyboard : MonoBehaviour
     private String camPosition;
     private String camRotation;
 
+    [Header("Video Files in Resources/Videos/")]
     public string fileName0;
     public string fileName1;
     public string fileName2;
@@ -67,7 +73,7 @@ public class UIKeyboard : MonoBehaviour
     public string fileName7;
     public string fileName8;
     public string fileName9;
-    private VideoPlayer BGvideoPlayer;
+
 
     void Start()
     {
@@ -382,7 +388,24 @@ public class UIKeyboard : MonoBehaviour
                     loadPlayerPrefs(); // load saved values after scene transition
 
                 };
-                transition.FadeToScene(targetScene);
+                transition.FadeToScene(prevScene);
+            }
+
+            else
+                Debug.LogWarning("SceneTransition reference not set.");
+        }
+        if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            if (transition != null)
+            {
+                transition.onSceneLoaded = () =>
+                {
+                    // code to run after new scene is fully loaded
+                    //Debug.Log("Scene ready — now run command");
+                    loadPlayerPrefs(); // load saved values after scene transition
+
+                };
+                transition.FadeToScene(nextScene);
             }
 
             else
@@ -625,6 +648,18 @@ public class UIKeyboard : MonoBehaviour
                 {
                     Camera cam = camera.GetComponent<Camera>();
                     cam.sensorSize -= new Vector2(0f, step * 10f); // Decrease sensor size while pageDownKey is held down
+                    camSensorIn.text = cam.sensorSize.ToString("F4");
+                }
+                if (Keyboard.current.insertKey.isPressed)
+                {
+                    Camera cam = camera.GetComponent<Camera>();
+                    cam.sensorSize += new Vector2(step * 10f, 0f); // Increase sensor size while fKey is held down
+                    camSensorIn.text = cam.sensorSize.ToString("F4");
+                }
+                if (Keyboard.current.deleteKey.isPressed)
+                {
+                    Camera cam = camera.GetComponent<Camera>();
+                    cam.sensorSize -= new Vector2(step * 10f, 0f); // Decrease sensor size while pageDownKey is held down
                     camSensorIn.text = cam.sensorSize.ToString("F4");
                 }
 

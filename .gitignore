@@ -70,3 +70,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# large video files and resourcesa folders
+/Assets/Resources/Videos
+/_builds/FRGMNTL_test/FRGMNTL_test_Data/resources.resource
+/_builds/Nautilae_Data/resources.resource

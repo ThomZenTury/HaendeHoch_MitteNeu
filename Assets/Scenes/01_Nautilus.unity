@@ -1062,6 +1062,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NautilusGearMain
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
+      propertyPath: m_TagString
+      value: allGears
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2258,6 +2262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NautilusGear1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
+      propertyPath: m_TagString
+      value: allGears
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2789,6 +2797,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_Name
       value: PlanetaryPlanetLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
+      propertyPath: m_TagString
+      value: planetaryRings
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4717,12 +4729,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6103c6fad92b5c564828080d13114157, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1bdac4bcffaaa62eb95a68abf688d5a7, type: 2}
     - target: {fileID: 919132149155446097, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
       propertyPath: m_Name
       value: NautilusGear2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
+      propertyPath: m_TagString
+      value: allGears
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4843,7 +4867,7 @@ Transform:
   m_GameObject: {fileID: 599813642}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: -0.8}
+  m_LocalPosition: {x: 0, y: 1.4, z: -0.03}
   m_LocalScale: {x: 1.18, y: 0.73749995, z: 0.66374993}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4857,7 +4881,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599813642}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 961a4c4c53e3dff9aa8a88156a1cea28, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 02df3f31fb82d45adabcb3c23d1e02f7, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -5988,6 +6012,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
+      propertyPath: m_TagString
+      value: allGears
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6845,7 +6873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ccbb75b49cc728606987dc4142a3a579, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ccbb75b49cc728606987dc4142a3a579, type: 3}
       propertyPath: m_TagString
@@ -8649,7 +8677,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1191974067
 Transform:
   m_ObjectHideFlags: 0
@@ -9005,6 +9033,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
       propertyPath: m_Name
       value: NautilusGear3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 997018272dc580a54a0c9ebe670a2bdd, type: 3}
+      propertyPath: m_TagString
+      value: allGears
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9741,6 +9773,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NautilusGearMain
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
+      propertyPath: m_TagString
+      value: allGears
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9816,6 +9852,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
+      propertyPath: m_TagString
+      value: allGears
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11355,19 +11395,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9659258
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.2588191
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.9659258
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.2588191
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11375,7 +11415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11388,6 +11428,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
       propertyPath: m_Name
       value: PlanetaryPlanet
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 341cf4c06d786c3978782b3824b09320, type: 3}
+      propertyPath: m_TagString
+      value: planetaryRings
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11978,10 +12022,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UItoggle
   transition: {fileID: 437827414}
-  targetScene: 02_Nautilus-SDFparticles
+  prevScene: 02_Nautilus-SDFparticles
+  nextScene: 02_Nautilus-SDFparticles
   menu: {fileID: 1469895431}
   BGVideoPanel: {fileID: 599813642}
   camera: {fileID: 450753640}
+  planetary: {fileID: 1282258304}
   fine: {fileID: 2098020266}
   camLock: {fileID: 452490024}
   camXIn: {fileID: 589683875}
@@ -11994,14 +12040,18 @@ MonoBehaviour:
   RightSpeedIn: {fileID: 1543450096}
   LeftRotYIn: {fileID: 570722822}
   RightRotYIn: {fileID: 14425738}
-  planetary: {fileID: 1282258304}
   toggleLeftGears: 0
   toggleRightGears: 0
-  fileName0: SmokeSingleTrail
-  fileName1: SmokeThickAllOver
-  fileName2: SmokeThickPinkFromAbove
-  fileName3: TKMAGenniesTest
-  fileName4: 
+  fileName0: SmokeBG_MASTER
+  fileName1: EyeGalaxy
+  fileName2: TKMAGenniesTest
+  fileName3: MetaBalls
+  fileName4: ProxSticks_MASTER
+  fileName5: RainingGears_MASTER
+  fileName6: TextGlitch
+  fileName7: 
+  fileName8: 
+  fileName9: 
 --- !u!114 &1805480887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12015,20 +12065,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OSC_receive_main
   Receiver: {fileID: 486957704}
+  nextSceneAddr: /nextScene
+  floorMoveUpAddr: /floor/moveUp
+  floorScaleAddr: /floor/setScale
   videoActiveAddr: /BGVideo/setActive
+  videoSpeedAddr: /BGVideo/setSpeed
   videoAlphaAddr: /BGVideo/setAlpha
   videoIntensityAddr: /BGVideo/setIntensity
   videoClipAddr: /BGVideo/setClip
-  floorMoveUpAddr: /floor/moveUp
-  floorScaleAddr: /floor/setScale
+  videoTransTimeAddr: /BGVideo/setTransTime
+  gearsMatChangeAddr: /materials/setGearsMat
+  ringsMatChangeAddr: /materials/setRingsMat
+  BGMatChangeAddr: /materials/setBGMat
+  gridFadeAddr: /materials/GridFade
+  bobblesFadeAddr: /materials/bobblesFade
+  shellFadeAddr: /materials/shellFade
+  shellDistortFadeAddr: /materials/shellDistortFade
+  portalFadeAddr: /materials/portalFade
+  gearPulseFadeAddr: /materials/gearPulseFade
+  ringsPulseFadeAddr: /materials/ringsPulseFade
+  BGPulseFadeAddr: /materials/BGPulseFade
+  VFXactivateAddr: /VFX/activate
+  VFXtrailsAddr: /VFX/burstTrails
+  VFXhandPartsFadeAddr: /VFX/handPartsFade
+  VFXfloatingPartsFadeAddr: /VFX/floatingPartsFade
+  VFXcrawlersFadeAddr: /VFX/crawlersFade
+  VFXcrawlersRateAddr: /VFX/crawlersRate
+  VFXcrawlersDistAddr: /VFX/crawlersDist
   BGVideoPanel: {fileID: 599813642}
   videoMaterial: {fileID: 2100000, guid: 2648342e4ebae8ee48614b580e18059b, type: 2}
+  hands: {fileID: 0}
   floorPanel: {fileID: 1545351956}
-  fileName0: SmokeSingleTrail
-  fileName1: SmokeThickAllOver
-  fileName2: SmokeThickPinkFromAbove
-  fileName3: TKMAGenniesTest
-  fileName4: 
+  visualEffect: {fileID: 0}
+  VFXHandParticles: {fileID: 0}
+  VFXsurfaceRipple: {fileID: 0}
+  targetMaterial0: {fileID: 2100000, guid: 2648342e4ebae8ee48614b580e18059b, type: 2}
+  targetMaterial1: {fileID: 2100000, guid: 5ac60e849390621c295f6170d0c90a48, type: 2}
+  targetMaterial2: {fileID: 2100000, guid: 264a8d2262c26272a8612c01f2c04f54, type: 2}
+  targetMaterial3: {fileID: 2100000, guid: 0be0c64a41ae6accb95bfcd4cd542b88, type: 2}
+  targetMaterial4: {fileID: 2100000, guid: b0d8fe123dd3ed300a8380913507ddfa, type: 2}
+  targetMaterial5: {fileID: 2100000, guid: 6103c6fad92b5c564828080d13114157, type: 2}
+  targetMaterial6: {fileID: 2100000, guid: c346facfb89c8e3509dd6fdaa4110a73, type: 2}
+  targetMaterial7: {fileID: 2100000, guid: 066f174a6b717e540abf1584c90588eb, type: 2}
+  targetMaterial8: {fileID: 2100000, guid: 7fd7230d84393a3d4826d4b51229e0f7, type: 2}
+  targetMaterial9: {fileID: 2100000, guid: 98a93ac72b5e00a6b948b2f514c2f111, type: 2}
+  targetMaterial10: {fileID: 2100000, guid: 5b1093aa5d350a92daf3efe25879d322, type: 2}
+  targetMaterial11: {fileID: 2100000, guid: 31bc830252d3e054d8ae07fbd109fb55, type: 2}
+  fileName0: SmokeBG_MASTER
+  fileName1: EyeGalaxy
+  fileName2: TKMAGenniesTest
+  fileName3: MetaBalls
+  fileName4: ProxSticks_MASTER
+  fileName5: RainingGears_MASTER
+  fileName6: TextGlitch
+  fileName7: 
+  fileName8: 
+  fileName9: 
 --- !u!1 &1860355650
 GameObject:
   m_ObjectHideFlags: 0
@@ -13662,6 +13754,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8b6bbeabc14d814648ca578a884ab0a6, type: 3}
+      propertyPath: m_TagString
+      value: allGears
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
