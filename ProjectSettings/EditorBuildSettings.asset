@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/OutdoorsScene.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/01_Nautilus.unity
     guid: b2855e7814a16ec8fb74b674f1448587
   - enabled: 1

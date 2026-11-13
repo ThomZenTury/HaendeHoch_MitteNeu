@@ -3,6 +3,9 @@ using UnityEngine.Video;
 using System;
 using UnityEngine.VFX;
 using UnityEngine.Rendering.HighDefinition.Attributes;
+using UnityEngine.UI;
+using TMPro;
+
 
 
 namespace extOSC
@@ -19,6 +22,49 @@ namespace extOSC
         public string nextSceneAddr = "/nextScene"; // 0 = previous scene, 1 = next scene
         public string floorMoveUpAddr = "/floor/moveUp";
         public string floorScaleAddr = "/floor/setScale";
+
+        [SerializeField] private Slider sliderXleft;        // assign in Inspector
+        [SerializeField] private Slider sliderYleft;        // assign in Inspector
+        [SerializeField] private Slider sliderXright;        // assign in Inspector
+        [SerializeField] private Slider sliderYright;        // assign in Inspector
+        [SerializeField] private Slider opacitySlider;        // assign in Inspector
+        [SerializeField] private TMP_InputField leftRot_txtField;    // assign in Inspector
+        [SerializeField] private TMP_InputField rightRot_txtField;    // assign in Inspector
+        // Camera setup OSC Addresses
+        public string showUIAddr = "/UI/show";
+        public string opacityUIAddr = "/UI/opacity";
+        public string fineTuneAddr = "/UI/fineTune";
+        public string camLockAddr = "/cam/lock";
+        public string leftLockAddr = "/leftGears/lock";
+        public string rightLockAddr = "/rightGears/lock";
+        public string shortCutsAddr = "/show/shortcuts";
+        public string camUpAddr = "/cam/up";
+        public string camDownAddr = "/cam/down";
+        public string camLeftAddr = "/cam/left";
+        public string camBackAddr = "/cam/back";
+        public string camForthAddr = "/cam/forth";
+        public string camRightAddr = "/cam/right";
+        public string camTiltUpAddr = "/cam/tiltUp";
+        public string camTiltDownAddr = "/cam/tiltDown";
+        public string camPanLeftAddr = "/cam/panLeft";
+        public string camPanRightAddr = "/cam/panRight";
+        public string leftGearsUpAddr = "/leftGears/up";
+        public string leftGearsDownAddr = "/leftGears/down";
+        public string leftGearsLeftAddr = "/leftGears/left";
+        public string leftGearsRightAddr = "/leftGears/right";
+        public string rightGearsUpAddr = "/rightGears/up";
+        public string rightGearsDownAddr = "/rightGears/down";
+        public string rightGearsLeftAddr = "/rightGears/left";
+        public string rightGearsRightAddr = "/rightGears/right";
+        public string leftGearsSliderYAddr = "/leftGears/sliderY";
+        public string leftGearsSliderXAddr = "/leftGears/sliderX";
+        public string rightGearsSliderYAddr = "/rightGears/sliderY";
+        public string rightGearsSliderXAddr = "/rightGears/sliderX";
+        public String leftGearsRotateAddr = "/leftGears/rotate";
+        public String rightGearsRotateAddr = "/rightGears/rotate";
+        public String sssnSaveAddr = "/sssn/save";
+
+
 
         [Header("Video OSC Addresses")]
         public string videoActiveAddr = "/BGVideo/setActive";
@@ -127,6 +173,44 @@ namespace extOSC
             Receiver.Bind(nextSceneAddr, ReceivedNextScene);
             Receiver.Bind(floorMoveUpAddr, ReceivedFloorMoveUp);
             Receiver.Bind(floorScaleAddr, ReceivedFloorScale);
+            Receiver.Bind(showUIAddr, ReceivedshowUI);
+            Receiver.Bind(fineTuneAddr, ReceivedFineTune);
+            Receiver.Bind(opacityUIAddr, ReceivedUIopacity);
+            // camera setup
+
+            Receiver.Bind(camLockAddr, ReceivedCamLock);
+            Receiver.Bind(leftLockAddr, ReceivedLeftLock);
+            Receiver.Bind(rightLockAddr, ReceivedRightLock);
+            Receiver.Bind(shortCutsAddr, ReceivedShortCuts);
+            Receiver.Bind(camUpAddr, ReceivedCamUp);
+            Receiver.Bind(camDownAddr, ReceivedCamDown);
+            Receiver.Bind(camLeftAddr, ReceivedCamLeft);
+            Receiver.Bind(camRightAddr, ReceivedCamRight);
+            Receiver.Bind(camForthAddr, ReceivedCamForth);
+            Receiver.Bind(camBackAddr, ReceivedCamBack);
+            Receiver.Bind(camTiltUpAddr, ReceivedCamTiltUp);
+            Receiver.Bind(camTiltDownAddr, ReceivedCamTiltDown);
+            Receiver.Bind(camPanLeftAddr, ReceivedCamPanLeft);
+            Receiver.Bind(camPanRightAddr, ReceivedCamPanRight);
+
+
+            // gearsets movements
+            Receiver.Bind(leftGearsUpAddr, ReceivedLeftGearsUp);
+            Receiver.Bind(leftGearsDownAddr, ReceivedLeftGearsDown);
+            Receiver.Bind(leftGearsLeftAddr, ReceivedLeftGearsLeft);
+            Receiver.Bind(leftGearsRightAddr, ReceivedLeftGearsRight);
+            Receiver.Bind(rightGearsUpAddr, ReceivedRightGearsUp);
+            Receiver.Bind(rightGearsDownAddr, ReceivedRightGearsDown);
+            Receiver.Bind(rightGearsLeftAddr, ReceivedRightGearsLeft);
+            Receiver.Bind(rightGearsRightAddr, ReceivedRightGearsRight);
+            Receiver.Bind(leftGearsSliderYAddr, ReceivedLeftGearsSliderY);
+            Receiver.Bind(leftGearsSliderXAddr, ReceivedLeftGearsSliderX);
+            Receiver.Bind(rightGearsSliderYAddr, ReceivedRightGearsSliderY);
+            Receiver.Bind(rightGearsSliderXAddr, ReceivedRightGearsSliderX);
+            Receiver.Bind(leftGearsRotateAddr, ReceivedLeftGearsRotate);
+            Receiver.Bind(rightGearsRotateAddr, ReceivedRightGearsRotate);
+            Receiver.Bind(sssnSaveAddr, ReceivedSssnSave);
+
             // Video
             Receiver.Bind(videoActiveAddr, ReceivedVideoActive);
             Receiver.Bind(videoSpeedAddr, ReceivedVideoSpeed);
@@ -343,10 +427,489 @@ namespace extOSC
             if (message.ToFloat(out var value))
             {
                 floorPanel.transform.localScale = new Vector3(value / 2, 1, value);
+            }
+        }
+        private void ReceivedshowUI(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                if (value == 0)
+                {
+                    GetComponent<UIKeyboard>().maintenanceMode = false;
+                    GetComponent<UIKeyboard>().menu.SetActive(false);
+                    // Debug.LogFormat("Received: set maintenanceMode to {0}", value);
+                }
+                else if (value == 1)
+                {
+                    GetComponent<UIKeyboard>().maintenanceMode = true;
+                    GetComponent<UIKeyboard>().menu.SetActive(true);
+                    // Debug.LogFormat("eceioved", value);
+                }
+            }
+        }
 
+        private void ReceivedFineTune(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                if (value == 0)
+                {
+                    GetComponent<UIKeyboard>().fine.isOn = false;
+                    // Debug.LogFormat("Received: set fineTuneMode to {0}", value);
+                }
+                else if (value == 1)
+                {
+                    GetComponent<UIKeyboard>().fine.isOn = true;
+                    // Debug.LogFormat("eceioved", value);
+                }
+            }
+        }
+
+        private void ReceivedUIopacity(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                // GetComponent<UIKeyboard>().canvasGroup.alpha = value;
+                opacitySlider.value = value;
+            }
+        }
+
+        private void ReceivedCamLock(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                if (value == 0)
+                {
+                    GetComponent<UIKeyboard>().camLock.isOn = true;
+                }
+                else if (value == 1)
+                {
+                    GetComponent<UIKeyboard>().camLock.isOn = false;
+                }
+            }
+        }
+        private void ReceivedLeftLock(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                if (value == 0)
+                {
+                    GetComponent<UIKeyboard>().leftLock.isOn = true;
+                }
+                else if (value == 1)
+                {
+                    GetComponent<UIKeyboard>().leftLock.isOn = false;
+                }
+            }
+        }
+        private void ReceivedRightLock(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                if (value == 0)
+                {
+                    GetComponent<UIKeyboard>().rightLock.isOn = true;
+                }
+                else if (value == 1)
+                {
+                    GetComponent<UIKeyboard>().rightLock.isOn = false;
+                }
+            }
+        }
+
+        private void ReceivedShortCuts(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                if (value == 0)
+                {
+                    GetComponent<UIKeyboard>().showHelp.isOn = false;
+                }
+                else if (value == 1)
+                {
+                    GetComponent<UIKeyboard>().showHelp.isOn = true;
+                }
+            }
+        }
+
+
+        //////////////////// camera controls
+
+        private void MainCamMoveAndRotate(string target, string action, string direction)
+        {
+            var UIkeyboardScriptConnector = GetComponent<UIKeyboard>();
+            if (UIkeyboardScriptConnector == null || !UIkeyboardScriptConnector.maintenanceMode)
+            {
+                return;
             }
 
+            Transform cameraTransform = UIkeyboardScriptConnector.camera.transform;
+            string targetName = target.Trim();
+            string actionName = action.Trim();
+            string directionName = direction.Trim();
+
+            if (!string.Equals(targetName, "cam", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            if (string.Equals(actionName, "move", StringComparison.OrdinalIgnoreCase))
+            {
+                Vector3 position = cameraTransform.position;
+
+                switch (directionName.ToLowerInvariant())
+                {
+                    case "up":
+                        position.y += UIkeyboardScriptConnector.step;
+                        UIkeyboardScriptConnector.camYIn.text = position.y.ToString("F4");
+                        break;
+                    case "down":
+                        position.y -= UIkeyboardScriptConnector.step;
+                        UIkeyboardScriptConnector.camYIn.text = position.y.ToString("F4");
+                        break;
+                    case "left":
+                        position.x += UIkeyboardScriptConnector.step;
+                        UIkeyboardScriptConnector.camXIn.text = position.x.ToString("F4");
+                        break;
+                    case "right":
+                        position.x -= UIkeyboardScriptConnector.step;
+                        UIkeyboardScriptConnector.camXIn.text = position.x.ToString("F4");
+                        break;
+                    case "forth":
+                        position.z -= UIkeyboardScriptConnector.step;
+                        UIkeyboardScriptConnector.camZIn.text = position.z.ToString("F4");
+                        break;
+                    case "back":
+                        position.z += UIkeyboardScriptConnector.step;
+                        UIkeyboardScriptConnector.camZIn.text = position.z.ToString("F4");
+                        break;
+                    default:
+                        return;
+                }
+
+                cameraTransform.position = position;
+            }
+            else if (string.Equals(actionName, "rotate", StringComparison.OrdinalIgnoreCase))
+            {
+                Vector3 rotation = cameraTransform.rotation.eulerAngles;
+
+                switch (directionName.ToLowerInvariant())
+                {
+                    case "panleft":
+                        rotation.y -= UIkeyboardScriptConnector.step * 10f;
+                        UIkeyboardScriptConnector.camRotYIn.text = rotation.y.ToString("F4");
+                        break;
+                    case "panright":
+                        rotation.y += UIkeyboardScriptConnector.step * 10f;
+                        UIkeyboardScriptConnector.camRotYIn.text = rotation.y.ToString("F4");
+                        break;
+                    case "tiltup":
+                        rotation.x -= UIkeyboardScriptConnector.step * 10f;
+                        UIkeyboardScriptConnector.camRotXIn.text = rotation.x.ToString("F4");
+                        break;
+                    case "tiltdown":
+                        rotation.x += UIkeyboardScriptConnector.step * 10f;
+                        UIkeyboardScriptConnector.camRotXIn.text = rotation.x.ToString("F4");
+                        break;
+                    default:
+                        return;
+                }
+
+                cameraTransform.rotation = Quaternion.Euler(rotation);
+            }
         }
+
+        private void ReceivedCamUp(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "move", "up");
+            }
+        }
+
+        private void ReceivedCamDown(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "move", "down");
+            }
+        }
+
+        private void ReceivedCamLeft(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "move", "left");
+            }
+        }
+
+        private void ReceivedCamRight(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "move", "right");
+            }
+        }
+
+        private void ReceivedCamForth(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "move", "forth");
+            }
+        }
+
+        private void ReceivedCamBack(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "move", "back");
+            }
+        }
+
+        private void ReceivedCamPanLeft(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "rotate", "panLeft");
+            }
+        }
+
+        private void ReceivedCamPanRight(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "rotate", "panRight");
+            }
+        }
+
+        private void ReceivedCamTiltUp(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "rotate", "tiltUp");
+            }
+        }
+
+        private void ReceivedCamTiltDown(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainCamMoveAndRotate("cam", "rotate", "tiltDown");
+            }
+        }
+
+        // gearsets movements
+        private void MainGearsMoveAndRotate(string gearSide, string action, string direction, float rotationValue = 0.0f)
+        {
+            GameObject UIcontrols = GameObject.Find("UI_ctrl_manager_scripts");
+            if (UIcontrols == null)
+            {
+                return;
+            }
+
+            string side = gearSide.Trim();
+            string actionName = action.Trim();
+            string directionName = direction.Trim();
+
+            if (!string.Equals(actionName, "move", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(actionName, "rotate", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            float step = 0.0f;
+            Slider targetSliderX = null;
+            Slider targetSliderY = null;
+
+            if (string.Equals(actionName, "move", StringComparison.OrdinalIgnoreCase))
+            {
+
+                if (string.Equals(side, "leftGears", StringComparison.OrdinalIgnoreCase))
+                {
+                    step = UIcontrols.GetComponent<SliderToX>().step;
+                    targetSliderX = sliderXleft;
+                    targetSliderY = sliderYleft;
+                }
+                else if (string.Equals(side, "rightGears", StringComparison.OrdinalIgnoreCase))
+                {
+                    step = UIcontrols.GetComponent<SliderToX>().step;
+                    targetSliderX = sliderXright;
+                    targetSliderY = sliderYright;
+                }
+                else
+                {
+                    return;
+                }
+
+                if (targetSliderX == null || targetSliderY == null)
+                {
+                    return;
+                }
+
+                switch (directionName.ToLowerInvariant())
+                {
+                    case "up":
+                        targetSliderY.value += step;
+                        break;
+                    case "down":
+                        targetSliderY.value -= step;
+                        break;
+                    case "left":
+                        targetSliderX.value += step;
+                        break;
+                    case "right":
+                        targetSliderX.value -= step;
+                        break;
+                    default:
+                        return;
+                }
+            }
+
+            else if (string.Equals(actionName, "rotate", StringComparison.OrdinalIgnoreCase))
+            {
+                if (string.Equals(side, "leftGears", StringComparison.OrdinalIgnoreCase))
+                {
+                    // rotate left gears
+                    leftRot_txtField.text = rotationValue.ToString("F4");
+                    GetComponent<UIKeyboard>().OnLeftRotYInputChanged(rotationValue.ToString(""));
+                }
+                else if (string.Equals(side, "rightGears", StringComparison.OrdinalIgnoreCase))
+                {
+                    // rotate right gears
+                    rightRot_txtField.text = rotationValue.ToString("F4");
+                    GetComponent<UIKeyboard>().OnRightRotYInputChanged(rotationValue.ToString(""));
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+        private void ReceivedLeftGearsUp(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("leftGears", "move", "up");
+            }
+        }
+
+        private void ReceivedLeftGearsDown(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("leftGears", "move", "down");
+            }
+        }
+
+        private void ReceivedLeftGearsLeft(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("leftGears", "move", "left");
+            }
+        }
+
+        private void ReceivedLeftGearsRight(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("leftGears", "move", "right");
+            }
+        }
+
+        private void ReceivedRightGearsUp(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("rightGears", "move", "up");
+            }
+        }
+
+        private void ReceivedRightGearsDown(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("rightGears", "move", "down");
+            }
+        }
+
+        private void ReceivedRightGearsLeft(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("rightGears", "move", "left");
+            }
+        }
+
+        private void ReceivedRightGearsRight(OSCMessage message)
+        {
+            if (message.ToInt(out _))
+            {
+                MainGearsMoveAndRotate("rightGears", "move", "right");
+            }
+        }
+
+        private void ReceivedLeftGearsRotate(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                MainGearsMoveAndRotate("leftGears", "rotate", "noDir", value);
+            }
+        }
+
+        private void ReceivedRightGearsRotate(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                MainGearsMoveAndRotate("rightGears", "rotate", "noDir", value);
+            }
+        }
+
+        private void ReceivedLeftGearsSliderY(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                sliderYleft.value = value;
+            }
+        }
+
+        private void ReceivedLeftGearsSliderX(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                sliderXleft.value = value;
+            }
+        }
+
+        private void ReceivedRightGearsSliderY(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                sliderYright.value = value;
+            }
+        }
+
+        private void ReceivedRightGearsSliderX(OSCMessage message)
+        {
+            if (message.ToFloat(out var value))
+            {
+                sliderXright.value = value;
+            }
+        }
+        private void ReceivedSssnSave(OSCMessage message)
+        {
+            if (message.ToInt(out var value))
+            {
+                SaveSystem.SaveData();
+                UIKeyboard uiKeyboard = GetComponent<UIKeyboard>();
+                uiKeyboard.savedInfoTxt.gameObject.SetActive(true);
+                uiKeyboard.StartCoroutine(uiKeyboard.DeactivateTextAfterDelay(1.3f, uiKeyboard.savedInfoTxt));
+            }
+        }
+
+
 
         private void ReceivedGearsMatChange(OSCMessage message)
         {

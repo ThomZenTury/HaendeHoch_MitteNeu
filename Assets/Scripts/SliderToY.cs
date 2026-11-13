@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class SliderToY : MonoBehaviour
 {
-    [SerializeField] private Slider slider;        // assign in Inspector
+    [SerializeField] public Slider slider;        // assign in Inspector
     [SerializeField] private TextMeshProUGUI text;        // assign in Inspector
     [SerializeField] private TMP_InputField yIn;        // assign in Inspector
     [SerializeField] private Transform target;     // assign target transform
@@ -20,7 +20,7 @@ public class SliderToY : MonoBehaviour
     [SerializeField]
     private int downKeyVar = (int)Key.S; // Key to decrease slider value , key.S=33, key.K=25
 
-    private float step = 0.001f;
+    public float step = 0.001f;
 
     void Start()
     {

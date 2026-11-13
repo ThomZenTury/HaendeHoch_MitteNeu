@@ -90,7 +90,7 @@ Material:
     - _Negative: 0
     - _NegativeAmount: 0
     - _OpaqueCullMode: 2
-    - _Outline: 0
+    - _Outline: 1
     - _OutlineThickness: 1
     - _PerPixelSorting: 0
     - _Pixel_Resolution: 8

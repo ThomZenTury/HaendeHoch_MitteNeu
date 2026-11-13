@@ -5,11 +5,13 @@ using UnityEngine.InputSystem;
 
 public class SliderToX : MonoBehaviour
 {
-    [SerializeField] private Slider slider;        // assign in Inspector
+    [SerializeField] public Slider slider;        // assign in Inspector
     [SerializeField] private TextMeshProUGUI text;        // assign in Inspector
     [SerializeField] private TMP_InputField xIn;        // assign in Inspector
     [SerializeField] private Transform target;     // assign target transform
     [SerializeField] private Transform planetary;     // assign planetary for left set
+    [SerializeField] private Transform triangleLeft;     // assign triangle
+    [SerializeField] private Transform triangleRight;     // assign triangle
     [SerializeField] private Toggle fine;     // assign target transform
     [SerializeField] private Toggle isLocked;
     [SerializeField] private float minX = -2.0f;      // slider min mapped X
@@ -24,7 +26,7 @@ public class SliderToX : MonoBehaviour
     private int lockKeyVar = (int)Key.F1; // Key to toggle lock state key.F1=94, key.F2=95
 
 
-    private float step = 0.001f;
+    public float step = 0.001f;
 
     void Start()
     {
@@ -111,6 +113,21 @@ public class SliderToX : MonoBehaviour
                 Vector3 planetaryPos = planetary.position;
                 planetaryPos.x = x;
                 planetary.position = planetaryPos;
+            }
+
+            if (triangleLeft != null)
+            {
+                // move the Procedural triangle as well
+                Vector3 triangleLeftPos = triangleLeft.position;
+                triangleLeftPos.x = x + 0.2265f; //(the measured offset of the triangle)
+                triangleLeft.position = triangleLeftPos;
+            }
+            if (triangleRight != null)
+            {
+                // move the Procedural triangle as well
+                Vector3 triangleRightPos = triangleRight.position;
+                triangleRightPos.x = x - 0.2265f; //(the measured offset of the triangle)
+                triangleRight.position = triangleRightPos;
             }
 
 
