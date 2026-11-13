@@ -24,6 +24,9 @@ public class ProCamDepthMonitor : MonoBehaviour
     private int lastFrameWidth;
     private int lastFrameHeight;
 
+    private uint lastProcessedFrame;
+
+
     void Update()
     {
         if (openNI == null || !openNI.cameraInitialized)
@@ -46,6 +49,15 @@ public class ProCamDepthMonitor : MonoBehaviour
         {
             InitializeTexture(width, height);
         }
+
+        // Only process genuinely new depth frames.
+        if (openNI.frameCount == lastProcessedFrame)
+            return;
+
+        lastProcessedFrame = openNI.frameCount;
+
+        UpdateDepthTexture();
+
 
         UpdateDepthTexture();
 

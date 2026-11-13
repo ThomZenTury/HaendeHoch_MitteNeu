@@ -8,6 +8,12 @@ public class ProCamProjectorMapper : MonoBehaviour
     [Header("RGB Camera")]
     public Transform rgbCameraTransform;
 
+    [Header("Projector Camera")]
+    public Transform projectorCamera;
+
+    private bool projectorPoseApplied = false;
+
+
     [Header("Projector")]
     public bool applyDistortion = true;
 
@@ -71,6 +77,71 @@ public class ProCamProjectorMapper : MonoBehaviour
             v >= 0 &&
             v < intrinsics.height;
     }
+
+    private void LateUpdate()
+    {
+        if (projectorPoseApplied)
+            return;
+
+        if (!IsReady || projectorCamera == null)
+            return;
+
+        ApplyProjectorPose();
+    }
+
+    private void ApplyProjectorPose()
+    {
+        // Projector pose expressed in RGB camera coordinates,
+        // transformed into Unity world coordinates.
+        Matrix4x4 worldFromProjector =
+            rgbCameraTransform.localToWorldMatrix *
+            calibration.rgbFromProjector;
+
+        Vector3 position =
+            worldFromProjector.GetColumn(3);
+
+        Quaternion rotation =
+            worldFromProjector.rotation;
+
+        projectorCamera.SetPositionAndRotation(
+            position,
+            rotation
+        );
+
+        projectorPoseApplied = true;
+
+        Debug.Log(
+            "PROJECTOR POSE APPLIED\n" +
+            "Position: " + position + "\n" +
+            "Rotation: " + rotation.eulerAngles
+        );
+    }
+
+
+    // public void ApplyProjectorPose()
+    // {
+    //     if (calibration == null ||
+    //         rgbCameraTransform == null ||
+    //         projectorCamera == null)
+    //     {
+    //         Debug.LogError("Missing projector calibration references.");
+    //         return;
+    //     }
+
+    //     Matrix4x4 worldFromProjector =
+    //         rgbCameraTransform.localToWorldMatrix *
+    //         calibration.rgbFromProjector;
+
+    //     Vector3 position = worldFromProjector.GetColumn(3);
+    //     Quaternion rotation = worldFromProjector.rotation;
+
+    //     projectorCamera.SetPositionAndRotation(position, rotation);
+
+    //     Debug.Log(
+    //         $"Projector pose applied: Position={position}, Rotation={rotation.eulerAngles}"
+    //     );
+    // }
+
 
     public Vector2 ProjectorPixelToUV(Vector2 pixel)
     {
