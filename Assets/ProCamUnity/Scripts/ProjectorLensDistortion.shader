@@ -1,5 +1,12 @@
 Shader "Hidden/ProjectorLensDistortion"
 {
+Properties
+{
+    _MainTex("Main Texture", 2DArray) = "" {}
+    // _DebugView("Debug View", Float) = 0
+}
+
+
     HLSLINCLUDE
 
     #pragma target 4.5
@@ -8,107 +15,108 @@ Shader "Hidden/ProjectorLensDistortion"
 
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/PostProcessing/Shaders/CustomPostProcess.hlsl"
 
-    // HDRP source texture
     TEXTURE2D_X(_MainTex);
 
-    // Camera intrinsics
     float _Fx;
     float _Fy;
 
     float _Cx;
     float _Cy;
 
-    // Calibration resolution
     float _ImageWidth;
     float _ImageHeight;
 
-    // Radial distortion
     float _K1;
-
-    // Correction strength
     float _Strength;
 
+    float _DebugView;
 
-    // =============================================
-    // DISTORTION CORRECTION
-    // =============================================
 
     float4 CustomPostProcess(Varyings input) : SV_Target
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-        // Original output UV
         float2 uv = input.texcoord;
 
-        // Convert Unity UV to OpenCV pixel coordinates.
-        // OpenCV uses top-left image origin.
+
+        // =====================================
+        // DEBUG VIEW 1: UV GRADIENT
+        // =====================================
+
+        if (_DebugView > 0.5 && _DebugView < 1.5)
+        {
+            return float4(uv.x, uv.y, 0, 1);
+        }
+
+
+        // =====================================
+        // DEBUG VIEW 2: SOLID MAGENTA
+        // =====================================
+
+        if (_DebugView > 1.5)
+        {
+            return float4(1, 0, 1, 1);
+        }
+
+
+        // =====================================
+        // NORMAL DISTORTION CORRECTION
+        // =====================================
+
+        // Convert UV to OpenCV pixel coordinates.
 
         float2 pixel;
 
         pixel.x = uv.x * _ImageWidth;
-
         pixel.y = (1.0 - uv.y) * _ImageHeight;
 
 
-        // -----------------------------------------
-        // Normalize using camera intrinsics
-        // -----------------------------------------
+        // Normalize using projector intrinsics.
 
-        float x = (pixel.x - _Cx) / _Fx;
-
-        float y = (pixel.y - _Cy) / _Fy;
+        float xd = (pixel.x - _Cx) / _Fx;
+        float yd = (pixel.y - _Cy) / _Fy;
 
 
-        // -----------------------------------------
-        // D_simple radial distortion
-        // -----------------------------------------
+        // Inverse radial distortion.
 
-        float r2 = x * x + y * y;
+        float x = xd;
+        float y = yd;
 
-        float radial =
-            1.0 + _K1 * r2;
+        [unroll]
+        for (int i = 0; i < 8; i++)
+        {
+            float r2 = x * x + y * y;
 
-        float distortedX = x * radial;
+            float radial = 1.0 + _K1 * r2;
 
-        float distortedY = y * radial;
-
-
-        // -----------------------------------------
-        // Apply correction strength
-        // -----------------------------------------
-
-        x = lerp(x, distortedX, _Strength);
-
-        y = lerp(y, distortedY, _Strength);
+            x = xd / radial;
+            y = yd / radial;
+        }
 
 
-        // -----------------------------------------
-        // Convert back to pixel coordinates
-        // -----------------------------------------
+        // Apply correction strength.
+
+        x = lerp(xd, x, _Strength);
+        y = lerp(yd, y, _Strength);
+
+
+        // Convert back to pixel coordinates.
 
         float2 sourcePixel;
 
         sourcePixel.x = _Fx * x + _Cx;
-
         sourcePixel.y = _Fy * y + _Cy;
 
 
-        // -----------------------------------------
-        // Convert back to Unity UV
-        // -----------------------------------------
+        // Convert to Unity UV.
 
         float2 sourceUV;
 
-        sourceUV.x =
-            sourcePixel.x / _ImageWidth;
-
-        sourceUV.y =
-            1.0 - sourcePixel.y / _ImageHeight;
+        sourceUV.x = sourcePixel.x / _ImageWidth;
+        sourceUV.y = 1.0 - sourcePixel.y / _ImageHeight;
 
 
-        // -----------------------------------------
-        // Image boundaries
-        // -----------------------------------------
+        // Check boundaries.
 
         float inside =
             step(0.0, sourceUV.x) *
@@ -117,9 +125,7 @@ Shader "Hidden/ProjectorLensDistortion"
             step(sourceUV.y, 1.0);
 
 
-        // -----------------------------------------
-        // HDRP RTHandle-aware texture sampling
-        // -----------------------------------------
+        // HDRP RTHandle-aware sampling.
 
         float2 sampleUV =
             ClampAndScaleUVForBilinearPostProcessTexture(
@@ -134,10 +140,7 @@ Shader "Hidden/ProjectorLensDistortion"
             );
 
 
-        // Black outside image boundaries
-        color.rgb *= inside;
-
-        return color;
+        return float4(color.rgb * inside, 1);
     }
 
     ENDHLSL

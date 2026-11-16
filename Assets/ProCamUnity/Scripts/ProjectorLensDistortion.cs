@@ -5,7 +5,9 @@ using UnityEngine.Rendering.HighDefinition;
 
 [Serializable]
 [VolumeComponentMenu("Post-processing/Projector Lens Distortion")]
-public sealed class ProjectorLensDistortion : CustomPostProcessVolumeComponent
+public sealed class ProjectorLensDistortion :
+    CustomPostProcessVolumeComponent,
+    IPostProcessComponent
 {
     // =============================================
     // ENABLE / DISABLE
@@ -61,6 +63,14 @@ public sealed class ProjectorLensDistortion : CustomPostProcessVolumeComponent
     public FloatParameter k1 =
         new FloatParameter(0.17089973f);
 
+    [Header("Debug")]
+
+    public ClampedIntParameter debugView =
+    new ClampedIntParameter(0, 0, 2);
+    [Header("Debug")]
+
+
+
 
     // =============================================
     // INTERNAL
@@ -114,12 +124,13 @@ public sealed class ProjectorLensDistortion : CustomPostProcessVolumeComponent
 
     public bool IsActive()
     {
-        return enableDistortion.value &&
-               material != null &&
-               strength.value > 0f &&
-               fx.value > 0f &&
-               fy.value > 0f;
+        return material != null &&
+               (
+                   (enableDistortion.value && strength.value > 0f)
+                   || debugView.value > 0
+               );
     }
+
 
 
     // =============================================
@@ -127,51 +138,41 @@ public sealed class ProjectorLensDistortion : CustomPostProcessVolumeComponent
     // =============================================
 
     public override void Render(
-        CommandBuffer cmd,
-        HDCamera camera,
-        RTHandle source,
-        RTHandle destination)
+    CommandBuffer cmd,
+    HDCamera camera,
+    RTHandle source,
+    RTHandle destination)
     {
         if (material == null)
             return;
 
-        // Source image
-        material.SetTexture("_MainTex", source);
+        // Debug.Log("DEBUG VIEW VALUE: " + debugView.value);
 
-        // Camera intrinsics
+        // Set parameters
         material.SetFloat("_Fx", fx.value);
         material.SetFloat("_Fy", fy.value);
 
         material.SetFloat("_Cx", cx.value);
         material.SetFloat("_Cy", cy.value);
 
-        // Image resolution
-        material.SetFloat(
-            "_ImageWidth",
-            imageWidth.value
-        );
+        material.SetFloat("_ImageWidth", imageWidth.value);
+        material.SetFloat("_ImageHeight", imageHeight.value);
 
-        material.SetFloat(
-            "_ImageHeight",
-            imageHeight.value
-        );
-
-        // Radial distortion
         material.SetFloat("_K1", k1.value);
+        material.SetFloat("_Strength", strength.value);
 
-        // Correction strength
-        material.SetFloat(
-            "_Strength",
-            strength.value
-        );
+        material.SetFloat("_DebugView", debugView.value);
 
-        // Execute fullscreen shader
+        // HDRP fullscreen rendering
         HDUtils.DrawFullScreen(
             cmd,
             material,
+            source,
             destination
         );
     }
+
+
 
 
     // =============================================

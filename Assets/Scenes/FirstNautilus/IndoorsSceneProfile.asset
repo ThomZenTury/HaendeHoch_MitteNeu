@@ -70,6 +70,49 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
+--- !u!114 &-6639937969145016968
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1069fbf78a9b1cffb036095a6cb54a5, type: 3}
+  m_Name: ProjectorLensDistortion
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectorLensDistortion
+  active: 1
+  enableDistortion:
+    m_OverrideState: 1
+    m_Value: 1
+  strength:
+    m_OverrideState: 1
+    m_Value: 1
+  fx:
+    m_OverrideState: 0
+    m_Value: 1265.8625
+  fy:
+    m_OverrideState: 0
+    m_Value: 1255.1593
+  cx:
+    m_OverrideState: 0
+    m_Value: 965.7479
+  cy:
+    m_OverrideState: 0
+    m_Value: -118.757614
+  imageWidth:
+    m_OverrideState: 0
+    m_Value: 1920
+  imageHeight:
+    m_OverrideState: 0
+    m_Value: 1080
+  k1:
+    m_OverrideState: 0
+    m_Value: 0.17089973
+  debugView:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &-5535885722284554385
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -366,6 +409,7 @@ MonoBehaviour:
   - {fileID: -3402760856827992363}
   - {fileID: 4855257834221510264}
   - {fileID: 2586578998131945244}
+  - {fileID: -6639937969145016968}
 --- !u!114 &773934254324874839
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -938,5 +982,8 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0.5
   directionalLightsOnly:
+    m_OverrideState: 0
+    m_Value: 0
+  volumetricLightingDensityCutoff:
     m_OverrideState: 0
     m_Value: 0
