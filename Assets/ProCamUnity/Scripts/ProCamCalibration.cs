@@ -14,6 +14,8 @@ public class ProCamCalibration : MonoBehaviour
     [Header("Calibration status")]
     public bool calibrationLoaded;
     public string extrinsicsStatus;
+    // Incremented every time a calibration loads successfully.
+    public int calibrationVersion = 0;
 
     [Serializable]
     public class CameraIntrinsics
@@ -181,6 +183,9 @@ public class ProCamCalibration : MonoBehaviour
             );
 
             calibrationLoaded = true;
+
+            calibrationVersion++;
+
 
             Debug.Log("ProCamCalibration: Calibration initialization complete.");
 
