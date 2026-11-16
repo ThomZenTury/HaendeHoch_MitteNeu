@@ -200,28 +200,7 @@ MonoBehaviour:
       - rid: 696800339423133725
       - rid: 750374066990612480
     m_RuntimeSettings:
-      m_List:
-      - rid: 8556427327610290176
-      - rid: 8556427327610290180
-      - rid: 696800339423133697
-      - rid: 696800339423133699
-      - rid: 696800339423133700
-      - rid: 696800339423133701
-      - rid: 696800339423133702
-      - rid: 696800339423133704
-      - rid: 696800339423133706
-      - rid: 696800339423133707
-      - rid: 696800339423133708
-      - rid: 696800339423133712
-      - rid: 696800339423133713
-      - rid: 696800339423133715
-      - rid: 696800339423133716
-      - rid: 696800339423133717
-      - rid: 696800339423133718
-      - rid: 696800339423133719
-      - rid: 696800339423133721
-      - rid: 696800339423133723
-      - rid: 696800339423133724
+      m_List: []
   renderingLayerNames:
   - Light Layer default
   - Light Layer 1
@@ -325,7 +304,9 @@ MonoBehaviour:
           m_CustomPostProcessTypesAsString: []
         m_AfterPostProcessCustomPostProcesses:
           m_InjectionPoint: 2
-          m_CustomPostProcessTypesAsString: []
+          m_CustomPostProcessTypesAsString:
+          - ProjectorLensDistortion, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
     - rid: 696800339423133702
       type: {class: RenderingPathFrameSettings, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:

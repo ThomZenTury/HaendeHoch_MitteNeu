@@ -19,15 +19,24 @@ public class ProCamProjectorCamera : MonoBehaviour
     public float nearClip = 0.05f;
     public float farClip = 100f;
 
-    [Header("Physical Camera Calibration")]
+    [Header("Physical Camera Settings")]
 
-    public Vector2 physicalSensorSize =
-        new Vector2(36f, 20.42268f);
+    [Tooltip("Reference sensor width in millimetres.")]
+    public float referenceSensorWidth = 36f;
 
-    public float physicalFocalLength = 23.73492f;
+    [SerializeField]
+    private float calculatedFocalLength;
 
-    public Vector2 physicalLensShift =
-        new Vector2(0.002994f, -0.609961f);
+
+    [Header("Manual Lens Shift Adjustment")]
+
+    [Tooltip("Additional vertical lens shift in millimetres.")]
+    [Range(-50f, 50f)]
+    public float verticalShiftOffsetMM = 0f;
+
+    [Tooltip("Original calibrated vertical shift in millimetres.")]
+    [SerializeField]
+    private float initialVerticalShiftMM;
 
     [Header("Status")]
     public bool projectionApplied;
@@ -38,29 +47,12 @@ public class ProCamProjectorCamera : MonoBehaviour
 
     private int appliedCalibrationVersion = -1;
 
-
-    // private ProjectionMode appliedMode;
-
-    [Header("Physical Camera Settings")]
-
-    [Tooltip("Reference sensor width in millimetres.")]
-    public float referenceSensorWidth = 36f;
-
-    [ContextMenu("Reload Projector Calibration")]
-    public void ReloadProjectorCalibration()
-    {
-        if (calibration == null)
-        {
-            Debug.LogError("No calibration component assigned.");
-            return;
-        }
-
-        calibration.LoadCalibration();
-
-        Debug.Log("Projector calibration reload requested.");
-    }
+    private float appliedVerticalShiftOffsetMM = float.NaN;
 
 
+    // =====================================================
+    // INITIALIZATION
+    // =====================================================
 
     private void Awake()
     {
@@ -68,6 +60,11 @@ public class ProCamProjectorCamera : MonoBehaviour
 
         projectorCamera.usePhysicalProperties = true;
     }
+
+
+    // =====================================================
+    // AUTOMATIC UPDATE
+    // =====================================================
 
     private void LateUpdate()
     {
@@ -82,55 +79,98 @@ public class ProCamProjectorCamera : MonoBehaviour
         bool modeChanged =
             appliedMode != projectionMode;
 
+        bool shiftChanged =
+            !Mathf.Approximately(
+                appliedVerticalShiftOffsetMM,
+                verticalShiftOffsetMM
+            );
+
         if (!projectionApplied ||
             calibrationChanged ||
-            modeChanged)
+            modeChanged ||
+            shiftChanged)
         {
             ApplyCalibration();
         }
     }
 
 
+    // =====================================================
+    // APPLY CALIBRATION
+    // =====================================================
+
     public void ApplyCalibration()
     {
+        if (calibration == null)
+            return;
+
         var p = calibration.projector;
 
-        if (p.width <= 0 || p.height <= 0 ||
-            p.fx <= 0 || p.fy <= 0)
+        if (p.width <= 0 ||
+            p.height <= 0 ||
+            p.fx <= 0 ||
+            p.fy <= 0)
         {
-            Debug.LogError("Invalid projector intrinsics.");
+            Debug.LogError(
+                "ProCamProjectorCamera: Invalid projector intrinsics."
+            );
+
             return;
         }
 
-        // ==========================================
+        // ==============================================
         // 1. CALCULATE PHYSICAL CAMERA PARAMETERS
-        // ==========================================
+        // ==============================================
 
         float sensorWidth = referenceSensorWidth;
 
         float focalLength =
             p.fx * sensorWidth / p.width;
 
+        calculatedFocalLength = focalLength;
+
+
         float sensorHeight =
             focalLength * p.height / p.fy;
 
-        float shiftX =
+        // Original calibrated lens shift
+        float calibratedShiftX =
             (p.cx - p.width * 0.5f) / p.width;
 
-        float shiftY =
+        float calibratedShiftY =
             (p.cy - p.height * 0.5f) / p.height;
 
-        Vector2 sensorSize =
-            new Vector2(sensorWidth, sensorHeight);
+        // Convert original vertical shift into mm
+        float calibratedShiftYMM =
+            calibratedShiftY * sensorHeight;
 
-        Vector2 lensShift =
-            new Vector2(shiftX, shiftY);
+        // Display initial calibration offset
+        initialVerticalShiftMM =
+            calibratedShiftYMM;
 
-        // ==========================================
-        // 2. APPLY COMMON CAMERA SETTINGS
-        // ==========================================
+        // ==============================================
+        // 2. APPLY MANUAL MILLIMETRE OFFSET
+        // ==============================================
+
+        float additionalShiftY =
+            verticalShiftOffsetMM / sensorHeight;
+
+        Vector2 lensShift = new Vector2(
+            calibratedShiftX,
+            calibratedShiftY + additionalShiftY
+        );
+
+        Vector2 sensorSize = new Vector2(
+            sensorWidth,
+            sensorHeight
+        );
+
+        // ==============================================
+        // 3. APPLY COMMON CAMERA SETTINGS
+        // ==============================================
 
         projectorCamera.nearClipPlane = nearClip;
+
         projectorCamera.farClipPlane = farClip;
 
         projectorCamera.aspect =
@@ -138,19 +178,18 @@ public class ProCamProjectorCamera : MonoBehaviour
 
         projectorCamera.usePhysicalProperties = true;
 
-        projectorCamera.gateFit = Camera.GateFitMode.None;
-
-        // ==========================================
-        // 3. APPLY PHYSICAL CAMERA PARAMETERS
-        // ==========================================
+        projectorCamera.gateFit =
+            Camera.GateFitMode.None;
 
         projectorCamera.sensorSize = sensorSize;
+
         projectorCamera.focalLength = focalLength;
+
         projectorCamera.lensShift = lensShift;
 
-        // ==========================================
+        // ==============================================
         // 4. SELECT PROJECTION METHOD
-        // ==========================================
+        // ==============================================
 
         projectorCamera.ResetProjectionMatrix();
 
@@ -158,7 +197,11 @@ public class ProCamProjectorCamera : MonoBehaviour
         {
             case ProjectionMode.PhysicalCamera:
 
-                ApplyPhysicalCamera();
+                ApplyPhysicalCamera(
+                    focalLength,
+                    sensorSize,
+                    lensShift
+                );
 
                 break;
 
@@ -169,20 +212,23 @@ public class ProCamProjectorCamera : MonoBehaviour
                 break;
         }
 
-        // ==========================================
+        // ==============================================
         // 5. UPDATE STATUS
-        // ==========================================
+        // ==============================================
 
         appliedMode = projectionMode;
 
         appliedCalibrationVersion =
             calibration.calibrationVersion;
 
+        appliedVerticalShiftOffsetMM =
+            verticalShiftOffsetMM;
+
         projectionApplied = true;
 
-        // ==========================================
+        // ==============================================
         // 6. DEBUG INFORMATION
-        // ==========================================
+        // ==============================================
 
         Debug.Log(
             "================================\n" +
@@ -197,24 +243,66 @@ public class ProCamProjectorCamera : MonoBehaviour
             "--------------------------------\n" +
             $"Sensor Size: {sensorSize}\n" +
             $"Focal Length: {focalLength:F5} mm\n" +
+            $"Initial Vertical Shift: {initialVerticalShiftMM:F4} mm\n" +
+            $"Manual Vertical Offset: {verticalShiftOffsetMM:F4} mm\n" +
+            $"Effective Vertical Shift: {initialVerticalShiftMM + verticalShiftOffsetMM:F4} mm\n" +
             $"Lens Shift: {lensShift}\n" +
             "================================"
         );
     }
 
 
-    private void ApplyPhysicalCamera()
+    // =====================================================
+    // PHYSICAL CAMERA PROJECTION
+    // =====================================================
+
+    private void ApplyPhysicalCamera(
+        float focalLength,
+        Vector2 sensorSize,
+        Vector2 lensShift)
     {
         projectorCamera.usePhysicalProperties = true;
 
-        // Use the calculated physical parameters.
-        // Do not overwrite them with fixed values.
+        projectorCamera.sensorSize = sensorSize;
 
-        projectorCamera.ResetProjectionMatrix();
+        projectorCamera.focalLength = focalLength;
 
-        Debug.Log("Using Unity Physical Camera projection.");
+        projectorCamera.lensShift = lensShift;
+
+        projectorCamera.gateFit =
+            Camera.GateFitMode.None;
+
+        var p = calibration.projector;
+
+        Matrix4x4 physicalProjection;
+
+        Camera.CalculateProjectionMatrixFromPhysicalProperties(
+            out physicalProjection,
+            focalLength,
+            sensorSize,
+            lensShift,
+            nearClip,
+            farClip,
+            new Camera.GateFitParameters(
+                Camera.GateFitMode.None,
+                (float)p.width / p.height
+            )
+        );
+
+        projectorCamera.projectionMatrix =
+            physicalProjection;
+
+        Debug.Log(
+            "Using Unity Physical Camera projection.\n" +
+            $"Projection m02: {physicalProjection.m02}\n" +
+            $"Projection m12: {physicalProjection.m12}"
+        );
     }
 
+
+    // =====================================================
+    // ORIGINAL CALIBRATED MATRIX PROJECTION
+    // =====================================================
 
     private void ApplyCalibratedMatrix()
     {
@@ -241,8 +329,35 @@ public class ProCamProjectorCamera : MonoBehaviour
             farClip
         );
 
-        projectorCamera.projectionMatrix = projection;
+        projectorCamera.projectionMatrix =
+            projection;
 
-        Debug.Log("Using original calibrated projection matrix.");
+        Debug.Log(
+            "Using original calibrated projection matrix."
+        );
+    }
+
+
+    // =====================================================
+    // MANUAL CALIBRATION RELOAD
+    // =====================================================
+
+    [ContextMenu("Reload Projector Calibration")]
+    public void ReloadProjectorCalibration()
+    {
+        if (calibration == null)
+        {
+            Debug.LogError(
+                "ProCamProjectorCamera: No calibration component assigned."
+            );
+
+            return;
+        }
+
+        calibration.LoadCalibration();
+
+        Debug.Log(
+            "Projector calibration reload requested."
+        );
     }
 }
